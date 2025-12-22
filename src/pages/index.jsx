@@ -1,4 +1,4 @@
-import Layout from "./Layout.jsx";
+1qimport Layout from "./Layout.jsx";
 
 import Dashboard from "./Dashboard";
 
@@ -68,7 +68,7 @@ import ServiceIntelligence from "./ServiceIntelligence";
 
 import StylistPerformance from "./StylistPerformance";
 
-import connect-square from "./connect-square";
+import ConnectSquare from "./connect-square";
 
 import Clients from "./Clients";
 
@@ -168,7 +168,7 @@ const PAGES = {
     
     StylistPerformance: StylistPerformance,
     
-    connect-square: connect-square,
+    ConnectSquare: ConnectSquare
     
     Clients: Clients,
     
