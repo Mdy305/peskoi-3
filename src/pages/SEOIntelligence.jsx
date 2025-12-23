@@ -12,7 +12,7 @@ import {
   Clock,
   Sparkles,
   Search,
-  Loader2
+  Loader2,
 } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -31,7 +31,7 @@ export default function SEOIntelligence() {
   const analytics = useMemo(() => {
     // Top questions
     const questionCounts = {};
-    insights.forEach(i => {
+    insights.forEach((i) => {
       questionCounts[i.question] = (questionCounts[i.question] || 0) + 1;
     });
     const topQuestions = Object.entries(questionCounts)
@@ -41,8 +41,8 @@ export default function SEOIntelligence() {
 
     // Service conversion rates
     const serviceStats = {};
-    insights.forEach(i => {
-      i.services_mentioned?.forEach(service => {
+    insights.forEach((i) => {
+      i.services_mentioned?.forEach((service) => {
         if (!serviceStats[service]) {
           serviceStats[service] = { mentions: 0, bookings: 0 };
         }
@@ -57,15 +57,18 @@ export default function SEOIntelligence() {
         service,
         mentions: stats.mentions,
         bookings: stats.bookings,
-        conversionRate: stats.mentions > 0 ? Math.round((stats.bookings / stats.mentions) * 100) : 0
+        conversionRate:
+          stats.mentions > 0
+            ? Math.round((stats.bookings / stats.mentions) * 100)
+            : 0,
       }))
       .sort((a, b) => b.conversionRate - a.conversionRate)
       .slice(0, 8);
 
     // Location keywords
     const locationCounts = {};
-    insights.forEach(i => {
-      i.location_keywords?.forEach(loc => {
+    insights.forEach((i) => {
+      i.location_keywords?.forEach((loc) => {
         locationCounts[loc] = (locationCounts[loc] || 0) + 1;
       });
     });
@@ -76,21 +79,24 @@ export default function SEOIntelligence() {
 
     // Question categories
     const categoryCounts = {};
-    insights.forEach(i => {
-      categoryCounts[i.question_category] = (categoryCounts[i.question_category] || 0) + 1;
+    insights.forEach((i) => {
+      categoryCounts[i.question_category] =
+        (categoryCounts[i.question_category] || 0) + 1;
     });
 
     // Conversion metrics
     const totalConversations = insights.length;
-    const bookings = insights.filter(i => i.outcome === "booked").length;
-    const avgConversionTime = insights
-      .filter(i => i.conversion_time_seconds)
-      .reduce((sum, i) => sum + i.conversion_time_seconds, 0) / 
-      (insights.filter(i => i.conversion_time_seconds).length || 1);
+    const bookings = insights.filter((i) => i.outcome === "booked").length;
+    const avgConversionTime =
+      insights
+        .filter((i) => i.conversion_time_seconds)
+        .reduce((sum, i) => sum + i.conversion_time_seconds, 0) /
+      (insights.filter((i) => i.conversion_time_seconds).length || 1);
 
-    const overallConversionRate = totalConversations > 0 
-      ? Math.round((bookings / totalConversations) * 100) 
-      : 0;
+    const overallConversionRate =
+      totalConversations > 0
+        ? Math.round((bookings / totalConversations) * 100)
+        : 0;
 
     return {
       topQuestions,
@@ -100,7 +106,7 @@ export default function SEOIntelligence() {
       totalConversations,
       bookings,
       overallConversionRate,
-      avgConversionTime: Math.round(avgConversionTime)
+      avgConversionTime: Math.round(avgConversionTime),
     };
   }, [insights]);
 
@@ -115,13 +121,16 @@ export default function SEOIntelligence() {
             className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-[#84CC16]/10 border border-[#84CC16]/20"
           >
             <Sparkles className="w-4 h-4 text-[#84CC16]" />
-            <span className="text-sm font-medium text-[#84CC16]">SEO & Geo Intelligence</span>
+            <span className="text-sm font-medium text-[#84CC16]">
+              SEO & Geo Intelligence
+            </span>
           </motion.div>
           <h1 className="text-5xl font-bold mb-4 tracking-tight">
             Search Visibility Engine
           </h1>
           <p className="text-gray-400 text-lg">
-            Continuously improve local search rankings and conversion with real client data
+            Continuously improve local search rankings and conversion with real
+            client data
           </p>
         </div>
 
@@ -133,9 +142,12 @@ export default function SEOIntelligence() {
                 <p className="text-gray-400 text-sm">Conversion Rate</p>
                 <Target className="w-5 h-5 text-[#84CC16]" />
               </div>
-              <p className="text-3xl font-bold text-white">{analytics.overallConversionRate}%</p>
+              <p className="text-3xl font-bold text-white">
+                {analytics.overallConversionRate}%
+              </p>
               <p className="text-gray-500 text-xs mt-1">
-                {analytics.bookings} of {analytics.totalConversations} conversations
+                {analytics.bookings} of {analytics.totalConversations}{" "}
+                conversations
               </p>
             </CardContent>
           </Card>
@@ -146,8 +158,12 @@ export default function SEOIntelligence() {
                 <p className="text-gray-400 text-sm">Avg. Time to Book</p>
                 <Clock className="w-5 h-5 text-blue-500" />
               </div>
-              <p className="text-3xl font-bold text-white">{analytics.avgConversionTime}s</p>
-              <p className="text-gray-500 text-xs mt-1">From inquiry to booking</p>
+              <p className="text-3xl font-bold text-white">
+                {analytics.avgConversionTime}s
+              </p>
+              <p className="text-gray-500 text-xs mt-1">
+                From inquiry to booking
+              </p>
             </CardContent>
           </Card>
 
@@ -157,8 +173,12 @@ export default function SEOIntelligence() {
                 <p className="text-gray-400 text-sm">Total Conversations</p>
                 <MessageSquare className="w-5 h-5 text-purple-500" />
               </div>
-              <p className="text-3xl font-bold text-white">{analytics.totalConversations}</p>
-              <p className="text-gray-500 text-xs mt-1">Client interactions tracked</p>
+              <p className="text-3xl font-bold text-white">
+                {analytics.totalConversations}
+              </p>
+              <p className="text-gray-500 text-xs mt-1">
+                Client interactions tracked
+              </p>
             </CardContent>
           </Card>
 
@@ -168,7 +188,9 @@ export default function SEOIntelligence() {
                 <p className="text-gray-400 text-sm">Geo Keywords</p>
                 <MapPin className="w-5 h-5 text-orange-500" />
               </div>
-              <p className="text-3xl font-bold text-white">{analytics.topLocations.length}</p>
+              <p className="text-3xl font-bold text-white">
+                {analytics.topLocations.length}
+              </p>
               <p className="text-gray-500 text-xs mt-1">Location terms used</p>
             </CardContent>
           </Card>
@@ -177,16 +199,28 @@ export default function SEOIntelligence() {
         {/* Tabs */}
         <Tabs defaultValue="questions" className="space-y-6">
           <TabsList className="bg-[#141414] border border-[#1f1f1f]">
-            <TabsTrigger value="questions" className="data-[state=active]:bg-[#84CC16] data-[state=active]:text-black">
+            <TabsTrigger
+              value="questions"
+              className="data-[state=active]:bg-[#84CC16] data-[state=active]:text-black"
+            >
               Top Questions
             </TabsTrigger>
-            <TabsTrigger value="services" className="data-[state=active]:bg-[#84CC16] data-[state=active]:text-black">
+            <TabsTrigger
+              value="services"
+              className="data-[state=active]:bg-[#84CC16] data-[state=active]:text-black"
+            >
               Service Performance
             </TabsTrigger>
-            <TabsTrigger value="location" className="data-[state=active]:bg-[#84CC16] data-[state=active]:text-black">
+            <TabsTrigger
+              value="location"
+              className="data-[state=active]:bg-[#84CC16] data-[state=active]:text-black"
+            >
               Geo Keywords
             </TabsTrigger>
-            <TabsTrigger value="categories" className="data-[state=active]:bg-[#84CC16] data-[state=active]:text-black">
+            <TabsTrigger
+              value="categories"
+              className="data-[state=active]:bg-[#84CC16] data-[state=active]:text-black"
+            >
               Categories
             </TabsTrigger>
           </TabsList>
@@ -205,7 +239,9 @@ export default function SEOIntelligence() {
               </CardHeader>
               <CardContent>
                 {analytics.topQuestions.length === 0 ? (
-                  <p className="text-gray-500 text-center py-8">No questions tracked yet</p>
+                  <p className="text-gray-500 text-center py-8">
+                    No questions tracked yet
+                  </p>
                 ) : (
                   <div className="space-y-3">
                     {analytics.topQuestions.map((item, idx) => (
@@ -217,7 +253,9 @@ export default function SEOIntelligence() {
                         className="flex items-center justify-between p-4 bg-[#1f1f1f] rounded-lg border border-[#2a2a2a]"
                       >
                         <div className="flex-1">
-                          <p className="text-white font-medium">{item.question}</p>
+                          <p className="text-white font-medium">
+                            {item.question}
+                          </p>
                         </div>
                         <Badge className="bg-[#84CC16]/20 text-[#84CC16] border-0">
                           {item.count}x
@@ -244,7 +282,9 @@ export default function SEOIntelligence() {
               </CardHeader>
               <CardContent>
                 {analytics.topServices.length === 0 ? (
-                  <p className="text-gray-500 text-center py-8">No service data yet</p>
+                  <p className="text-gray-500 text-center py-8">
+                    No service data yet
+                  </p>
                 ) : (
                   <div className="grid md:grid-cols-2 gap-4">
                     {analytics.topServices.map((item, idx) => (
@@ -256,14 +296,18 @@ export default function SEOIntelligence() {
                         className="p-4 bg-[#1f1f1f] rounded-lg border border-[#2a2a2a]"
                       >
                         <div className="flex items-center justify-between mb-2">
-                          <h4 className="text-white font-semibold">{item.service}</h4>
-                          <Badge className={
-                            item.conversionRate >= 50 
-                              ? "bg-green-500/20 text-green-300 border-0"
-                              : item.conversionRate >= 30
-                              ? "bg-yellow-500/20 text-yellow-300 border-0"
-                              : "bg-gray-500/20 text-gray-300 border-0"
-                          }>
+                          <h4 className="text-white font-semibold">
+                            {item.service}
+                          </h4>
+                          <Badge
+                            className={
+                              item.conversionRate >= 50
+                                ? "bg-green-500/20 text-green-300 border-0"
+                                : item.conversionRate >= 30
+                                  ? "bg-yellow-500/20 text-yellow-300 border-0"
+                                  : "bg-gray-500/20 text-gray-300 border-0"
+                            }
+                          >
                             {item.conversionRate}%
                           </Badge>
                         </div>
@@ -294,7 +338,9 @@ export default function SEOIntelligence() {
               </CardHeader>
               <CardContent>
                 {analytics.topLocations.length === 0 ? (
-                  <p className="text-gray-500 text-center py-8">No location data yet</p>
+                  <p className="text-gray-500 text-center py-8">
+                    No location data yet
+                  </p>
                 ) : (
                   <div className="flex flex-wrap gap-3">
                     {analytics.topLocations.map((item, idx) => (
@@ -329,22 +375,24 @@ export default function SEOIntelligence() {
               </CardHeader>
               <CardContent>
                 <div className="grid md:grid-cols-2 gap-4">
-                  {Object.entries(analytics.categoryCounts).map(([category, count], idx) => (
-                    <motion.div
-                      key={category}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: idx * 0.05 }}
-                      className="flex items-center justify-between p-4 bg-[#1f1f1f] rounded-lg border border-[#2a2a2a]"
-                    >
-                      <span className="text-white font-medium capitalize">
-                        {category.replace("_", " ")}
-                      </span>
-                      <Badge className="bg-purple-500/20 text-purple-300 border-0">
-                        {count}
-                      </Badge>
-                    </motion.div>
-                  ))}
+                  {Object.entries(analytics.categoryCounts).map(
+                    ([category, count], idx) => (
+                      <motion.div
+                        key={category}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: idx * 0.05 }}
+                        className="flex items-center justify-between p-4 bg-[#1f1f1f] rounded-lg border border-[#2a2a2a]"
+                      >
+                        <span className="text-white font-medium capitalize">
+                          {category.replace("_", " ")}
+                        </span>
+                        <Badge className="bg-purple-500/20 text-purple-300 border-0">
+                          {count}
+                        </Badge>
+                      </motion.div>
+                    ),
+                  )}
                 </div>
               </CardContent>
             </Card>

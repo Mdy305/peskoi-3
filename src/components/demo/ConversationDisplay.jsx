@@ -2,7 +2,11 @@ import React from "react";
 import { Bot, User, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-export default function ConversationDisplay({ conversation, isConnected, isListening }) {
+export default function ConversationDisplay({
+  conversation,
+  isConnected,
+  isListening,
+}) {
   if (!isConnected) {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-center">
@@ -28,26 +32,32 @@ export default function ConversationDisplay({ conversation, isConnected, isListe
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
-            className={`flex gap-3 ${message.speaker === 'Användare' ? 'justify-end' : 'justify-start'}`}
+            className={`flex gap-3 ${message.speaker === "Användare" ? "justify-end" : "justify-start"}`}
           >
-            {message.speaker === 'AI' && (
+            {message.speaker === "AI" && (
               <div className="w-8 h-8 rounded-full bg-[#84CC16]/10 flex items-center justify-center flex-shrink-0">
                 <Bot className="w-4 h-4 text-[#84CC16]" />
               </div>
             )}
-            
-            <div className={`max-w-[70%] ${message.speaker === 'Användare' ? 'order-first' : ''}`}>
-              <div className={`p-4 rounded-2xl ${
-                message.speaker === 'AI' 
-                  ? 'bg-[#2A2A2A] text-white' 
-                  : 'bg-[#84CC16] text-black'
-              }`}>
+
+            <div
+              className={`max-w-[70%] ${message.speaker === "Användare" ? "order-first" : ""}`}
+            >
+              <div
+                className={`p-4 rounded-2xl ${
+                  message.speaker === "AI"
+                    ? "bg-[#2A2A2A] text-white"
+                    : "bg-[#84CC16] text-black"
+                }`}
+              >
                 <p className="text-sm leading-relaxed">{message.text}</p>
               </div>
-              <p className="text-xs text-gray-500 mt-1 px-2">{message.timestamp}</p>
+              <p className="text-xs text-gray-500 mt-1 px-2">
+                {message.timestamp}
+              </p>
             </div>
 
-            {message.speaker === 'Användare' && (
+            {message.speaker === "Användare" && (
               <div className="w-8 h-8 rounded-full bg-[#84CC16] flex items-center justify-center flex-shrink-0">
                 <User className="w-4 h-4 text-black" />
               </div>

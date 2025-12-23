@@ -10,47 +10,56 @@ export default function RetentionEngine() {
 
   // Fetch at-risk clients
   const { data: analyses = [], isLoading } = useQuery({
-    queryKey: ['retentionAnalyses'],
-    queryFn: () => base44.entities.ClientRetentionAnalysis.filter({
-      risk_level: { $in: ['high', 'critical'] }
-    }, '-churn_risk_score')
+    queryKey: ["retentionAnalyses"],
+    queryFn: () =>
+      base44.entities.ClientRetentionAnalysis.filter(
+        {
+          risk_level: { $in: ["high", "critical"] },
+        },
+        "-churn_risk_score",
+      ),
   });
 
   // Fetch pending campaigns
   const { data: campaigns = [] } = useQuery({
-    queryKey: ['retentionCampaigns'],
-    queryFn: () => base44.entities.BookingCampaign.filter({
-      campaign_type: 'retention',
-      status: 'draft'
-    })
+    queryKey: ["retentionCampaigns"],
+    queryFn: () =>
+      base44.entities.BookingCampaign.filter({
+        campaign_type: "retention",
+        status: "draft",
+      }),
   });
 
   const generateCampaignsMutation = useMutation({
-    mutationFn: () => base44.functions.invoke('generateRetentionCampaigns', {}),
+    mutationFn: () => base44.functions.invoke("generateRetentionCampaigns", {}),
     onSuccess: () => {
-      queryClient.invalidateQueries(['retentionCampaigns']);
-      queryClient.invalidateQueries(['retentionAnalyses']);
-    }
+      queryClient.invalidateQueries(["retentionCampaigns"]);
+      queryClient.invalidateQueries(["retentionAnalyses"]);
+    },
   });
 
   const approveCampaignMutation = useMutation({
-    mutationFn: ({ campaign_id, action, edited_message }) => 
-      base44.functions.invoke('approveCampaign', { campaign_id, action, edited_message }),
+    mutationFn: ({ campaign_id, action, edited_message }) =>
+      base44.functions.invoke("approveCampaign", {
+        campaign_id,
+        action,
+        edited_message,
+      }),
     onSuccess: () => {
-      queryClient.invalidateQueries(['retentionCampaigns']);
+      queryClient.invalidateQueries(["retentionCampaigns"]);
       setEditingCampaign(null);
       setEditedMessage("");
-    }
+    },
   });
 
   const analyzeChurnMutation = useMutation({
-    mutationFn: () => base44.functions.invoke('analyzeChurnRisk', {}),
+    mutationFn: () => base44.functions.invoke("analyzeChurnRisk", {}),
     onSuccess: () => {
-      queryClient.invalidateQueries(['retentionAnalyses']);
-    }
+      queryClient.invalidateQueries(["retentionAnalyses"]);
+    },
   });
 
-  const atRiskClients = analyses.filter(a => !a.campaign_triggered);
+  const atRiskClients = analyses.filter((a) => !a.campaign_triggered);
 
   if (isLoading) {
     return <div className="min-h-screen bg-black" />;
@@ -59,8 +68,9 @@ export default function RetentionEngine() {
   return (
     <div className="min-h-screen bg-black text-white">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
-
-        <p className="text-xs text-white/40 tracking-[0.15em] uppercase mb-12">Retention</p>
+        <p className="text-xs text-white/40 tracking-[0.15em] uppercase mb-12">
+          Retention
+        </p>
 
         {/* Actions */}
         <div className="flex flex-col sm:flex-row gap-4 mb-16">
@@ -69,16 +79,18 @@ export default function RetentionEngine() {
             disabled={analyzeChurnMutation.isPending}
             className="border border-white/[0.08] px-6 py-3 hover:border-white/20 transition-colors text-sm tracking-wide"
           >
-            {analyzeChurnMutation.isPending ? 'Analyzing...' : 'Analyze risk'}
+            {analyzeChurnMutation.isPending ? "Analyzing..." : "Analyze risk"}
           </button>
-          
+
           {atRiskClients.length > 0 && (
             <button
               onClick={() => generateCampaignsMutation.mutate()}
               disabled={generateCampaignsMutation.isPending}
               className="border border-white/[0.08] px-6 py-3 hover:border-white/20 transition-colors text-sm tracking-wide"
             >
-              {generateCampaignsMutation.isPending ? 'Generating...' : 'Generate campaigns'}
+              {generateCampaignsMutation.isPending
+                ? "Generating..."
+                : "Generate campaigns"}
             </button>
           )}
         </div>
@@ -86,7 +98,9 @@ export default function RetentionEngine() {
         {/* Pending Campaigns (Approval Queue) */}
         {campaigns.length > 0 && (
           <div className="mb-16">
-            <p className="text-xs text-white/30 tracking-[0.15em] uppercase mb-8">Pending approval</p>
+            <p className="text-xs text-white/30 tracking-[0.15em] uppercase mb-8">
+              Pending approval
+            </p>
             <div className="space-y-6">
               {campaigns.map((campaign) => (
                 <motion.div
@@ -97,16 +111,20 @@ export default function RetentionEngine() {
                 >
                   <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
                     <div className="flex-1">
-                      <p className="text-sm text-white/80 mb-2">{campaign.campaign_name}</p>
+                      <p className="text-sm text-white/80 mb-2">
+                        {campaign.campaign_name}
+                      </p>
                       <div className="flex flex-wrap gap-3 text-xs text-white/40">
                         <span>{campaign.channel}</span>
                         {campaign.scheduled_date && (
                           <span>
-                            {new Date(campaign.scheduled_date).toLocaleDateString('en-US', {
-                              month: 'short',
-                              day: 'numeric',
-                              hour: 'numeric',
-                              minute: '2-digit'
+                            {new Date(
+                              campaign.scheduled_date,
+                            ).toLocaleDateString("en-US", {
+                              month: "short",
+                              day: "numeric",
+                              hour: "numeric",
+                              minute: "2-digit",
                             })}
                           </span>
                         )}
@@ -147,8 +165,8 @@ export default function RetentionEngine() {
                           onClick={() => {
                             approveCampaignMutation.mutate({
                               campaign_id: campaign.id,
-                              action: 'approve',
-                              edited_message: editedMessage
+                              action: "approve",
+                              edited_message: editedMessage,
                             });
                           }}
                           disabled={approveCampaignMutation.isPending}
@@ -172,7 +190,7 @@ export default function RetentionEngine() {
                           onClick={() => {
                             approveCampaignMutation.mutate({
                               campaign_id: campaign.id,
-                              action: 'approve'
+                              action: "approve",
                             });
                           }}
                           disabled={approveCampaignMutation.isPending}
@@ -193,7 +211,7 @@ export default function RetentionEngine() {
                           onClick={() => {
                             approveCampaignMutation.mutate({
                               campaign_id: campaign.id,
-                              action: 'reject'
+                              action: "reject",
                             });
                           }}
                           disabled={approveCampaignMutation.isPending}
@@ -213,18 +231,29 @@ export default function RetentionEngine() {
         {/* At-Risk Clients */}
         {atRiskClients.length > 0 && (
           <div>
-            <p className="text-xs text-white/30 tracking-[0.15em] uppercase mb-8">At risk</p>
+            <p className="text-xs text-white/30 tracking-[0.15em] uppercase mb-8">
+              At risk
+            </p>
             <div className="space-y-4">
               {atRiskClients.map((client) => (
-                <div key={client.id} className="border-b border-white/[0.05] pb-4">
+                <div
+                  key={client.id}
+                  className="border-b border-white/[0.05] pb-4"
+                >
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
-                    <p className="text-sm text-white/80">{client.client_name}</p>
-                    <span className="text-xs text-white/40">{client.risk_level}</span>
+                    <p className="text-sm text-white/80">
+                      {client.client_name}
+                    </p>
+                    <span className="text-xs text-white/40">
+                      {client.risk_level}
+                    </span>
                   </div>
                   <p className="text-xs text-white/40 mb-2">
                     {client.days_since_last_visit} days since last visit
                   </p>
-                  <p className="text-xs text-white/60">{client.recommended_action}</p>
+                  <p className="text-xs text-white/60">
+                    {client.recommended_action}
+                  </p>
                 </div>
               ))}
             </div>
@@ -232,9 +261,10 @@ export default function RetentionEngine() {
         )}
 
         {atRiskClients.length === 0 && campaigns.length === 0 && (
-          <p className="text-sm text-white/40 text-center py-12">No retention campaigns</p>
+          <p className="text-sm text-white/40 text-center py-12">
+            No retention campaigns
+          </p>
         )}
-
       </div>
     </div>
   );

@@ -8,10 +8,10 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
 const statusColors = {
-  "bokad": "bg-yellow-500/10 text-yellow-500 border-yellow-500/20",
-  "bekräftad": "bg-blue-500/10 text-blue-500 border-blue-500/20",
-  "genomförd": "bg-[#84CC16]/10 text-[#84CC16] border-[#84CC16]/20",
-  "avbokad": "bg-red-500/10 text-red-500 border-red-500/20"
+  bokad: "bg-yellow-500/10 text-yellow-500 border-yellow-500/20",
+  bekräftad: "bg-blue-500/10 text-blue-500 border-blue-500/20",
+  genomförd: "bg-[#84CC16]/10 text-[#84CC16] border-[#84CC16]/20",
+  avbokad: "bg-red-500/10 text-red-500 border-red-500/20",
 };
 
 export default function RecentAppointments({ appointments }) {
@@ -29,8 +29,12 @@ export default function RecentAppointments({ appointments }) {
             <div className="w-16 h-16 bg-[#84CC16]/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
               <Calendar className="w-8 h-8 text-[#84CC16]" />
             </div>
-            <h3 className="text-lg font-semibold text-white mb-2">Inga bokningar än</h3>
-            <p className="text-gray-400 mb-6">Börja ta emot bokningar via AI-assistenten</p>
+            <h3 className="text-lg font-semibold text-white mb-2">
+              Inga bokningar än
+            </h3>
+            <p className="text-gray-400 mb-6">
+              Börja ta emot bokningar via AI-assistenten
+            </p>
             <Link to={createPageUrl("LiveDemo")}>
               <Button className="bg-gradient-to-r from-[#84CC16] to-[#65A30D] hover:from-[#65A30D] hover:to-[#84CC16] text-black font-medium">
                 <Sparkles className="w-4 h-4 mr-2" />
@@ -51,7 +55,11 @@ export default function RecentAppointments({ appointments }) {
           Senaste Bokningar
         </CardTitle>
         <Link to={createPageUrl("Calendar")}>
-          <Button variant="ghost" size="sm" className="text-[#84CC16] hover:text-[#84CC16] hover:bg-[#84CC16]/10">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-[#84CC16] hover:text-[#84CC16] hover:bg-[#84CC16]/10"
+          >
             Se alla
             <ArrowRight className="w-4 h-4 ml-1" />
           </Button>
@@ -70,7 +78,11 @@ export default function RecentAppointments({ appointments }) {
                     <h4 className="text-white font-semibold group-hover:text-[#84CC16] transition-colors">
                       {appointment.service}
                     </h4>
-                    <Badge className={statusColors[appointment.status] || statusColors.bokad}>
+                    <Badge
+                      className={
+                        statusColors[appointment.status] || statusColors.bokad
+                      }
+                    >
                       {appointment.status}
                     </Badge>
                   </div>
@@ -83,11 +95,14 @@ export default function RecentAppointments({ appointments }) {
               <div className="flex flex-wrap gap-4 text-xs text-gray-500">
                 <div className="flex items-center gap-1">
                   <Calendar className="w-3 h-3" />
-                  {new Date(appointment.appointment_date).toLocaleDateString('sv-SE', {
-                    day: 'numeric',
-                    month: 'short',
-                    year: 'numeric'
-                  })}
+                  {new Date(appointment.appointment_date).toLocaleDateString(
+                    "sv-SE",
+                    {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    },
+                  )}
                 </div>
                 <div className="flex items-center gap-1">
                   <Clock className="w-3 h-3" />

@@ -9,11 +9,24 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Trash2 } from "lucide-react";
 
-export default function AppointmentModal({ isOpen, onClose, onSave, onDelete, appointment, isLoading }) {
+export default function AppointmentModal({
+  isOpen,
+  onClose,
+  onSave,
+  onDelete,
+  appointment,
+  isLoading,
+}) {
   const [formData, setFormData] = useState({
     customer_name: "",
     customer_phone: "",
@@ -67,7 +80,9 @@ export default function AppointmentModal({ isOpen, onClose, onSave, onDelete, ap
                 <Label className="text-gray-400">Customer Name *</Label>
                 <Input
                   value={formData.customer_name}
-                  onChange={(e) => setFormData({ ...formData, customer_name: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, customer_name: e.target.value })
+                  }
                   className="bg-black border-[#1a1a1a] text-white"
                   required
                 />
@@ -76,7 +91,9 @@ export default function AppointmentModal({ isOpen, onClose, onSave, onDelete, ap
                 <Label className="text-gray-400">Phone *</Label>
                 <Input
                   value={formData.customer_phone}
-                  onChange={(e) => setFormData({ ...formData, customer_phone: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, customer_phone: e.target.value })
+                  }
                   className="bg-black border-[#1a1a1a] text-white"
                   required
                 />
@@ -88,7 +105,9 @@ export default function AppointmentModal({ isOpen, onClose, onSave, onDelete, ap
               <Input
                 type="email"
                 value={formData.customer_email}
-                onChange={(e) => setFormData({ ...formData, customer_email: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, customer_email: e.target.value })
+                }
                 className="bg-black border-[#1a1a1a] text-white"
               />
             </div>
@@ -97,7 +116,9 @@ export default function AppointmentModal({ isOpen, onClose, onSave, onDelete, ap
               <Label className="text-gray-400">Service *</Label>
               <Input
                 value={formData.service}
-                onChange={(e) => setFormData({ ...formData, service: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, service: e.target.value })
+                }
                 className="bg-black border-[#1a1a1a] text-white"
                 placeholder="e.g. Klippning, Färgning"
                 required
@@ -110,7 +131,12 @@ export default function AppointmentModal({ isOpen, onClose, onSave, onDelete, ap
                 <Input
                   type="date"
                   value={formData.appointment_date}
-                  onChange={(e) => setFormData({ ...formData, appointment_date: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      appointment_date: e.target.value,
+                    })
+                  }
                   className="bg-black border-[#1a1a1a] text-white"
                   required
                 />
@@ -120,7 +146,12 @@ export default function AppointmentModal({ isOpen, onClose, onSave, onDelete, ap
                 <Input
                   type="time"
                   value={formData.appointment_time}
-                  onChange={(e) => setFormData({ ...formData, appointment_time: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      appointment_time: e.target.value,
+                    })
+                  }
                   className="bg-black border-[#1a1a1a] text-white"
                   required
                 />
@@ -133,7 +164,12 @@ export default function AppointmentModal({ isOpen, onClose, onSave, onDelete, ap
                 <Input
                   type="number"
                   value={formData.duration_minutes}
-                  onChange={(e) => setFormData({ ...formData, duration_minutes: parseInt(e.target.value) })}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      duration_minutes: parseInt(e.target.value),
+                    })
+                  }
                   className="bg-black border-[#1a1a1a] text-white"
                 />
               </div>
@@ -142,7 +178,12 @@ export default function AppointmentModal({ isOpen, onClose, onSave, onDelete, ap
                 <Input
                   type="number"
                   value={formData.price}
-                  onChange={(e) => setFormData({ ...formData, price: parseInt(e.target.value) })}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      price: parseInt(e.target.value),
+                    })
+                  }
                   className="bg-black border-[#1a1a1a] text-white"
                 />
               </div>
@@ -150,7 +191,9 @@ export default function AppointmentModal({ isOpen, onClose, onSave, onDelete, ap
                 <Label className="text-gray-400">Status</Label>
                 <Select
                   value={formData.status}
-                  onValueChange={(value) => setFormData({ ...formData, status: value })}
+                  onValueChange={(value) =>
+                    setFormData({ ...formData, status: value })
+                  }
                 >
                   <SelectTrigger className="bg-black border-[#1a1a1a] text-white">
                     <SelectValue />
@@ -169,7 +212,9 @@ export default function AppointmentModal({ isOpen, onClose, onSave, onDelete, ap
               <Label className="text-gray-400">Notes</Label>
               <Textarea
                 value={formData.notes}
-                onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, notes: e.target.value })
+                }
                 className="bg-black border-[#1a1a1a] text-white"
                 rows={3}
               />

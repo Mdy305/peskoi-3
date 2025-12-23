@@ -16,7 +16,7 @@ import {
   Sparkles,
   AlertCircle,
   MessageSquare,
-  Phone
+  Phone,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { format, parseISO } from "date-fns";
@@ -33,7 +33,10 @@ export default function ProactiveOutreach() {
   const { data: opportunities = [], isLoading: loadingOpps } = useQuery({
     queryKey: ["outreachOpportunities"],
     queryFn: async () => {
-      const response = await base44.functions.invoke("identifyOutreachOpportunities", {});
+      const response = await base44.functions.invoke(
+        "identifyOutreachOpportunities",
+        {},
+      );
       return response.data?.opportunities || [];
     },
   });
@@ -48,16 +51,31 @@ export default function ProactiveOutreach() {
 
   const stats = useMemo(() => {
     const total = outreachAttempts.length;
-    const responded = outreachAttempts.filter(o => o.response_status === "responded" || o.response_status === "booked").length;
-    const booked = outreachAttempts.filter(o => o.response_status === "booked").length;
-    const ignored = outreachAttempts.filter(o => o.response_status === "ignored").length;
+    const responded = outreachAttempts.filter(
+      (o) =>
+        o.response_status === "responded" || o.response_status === "booked",
+    ).length;
+    const booked = outreachAttempts.filter(
+      (o) => o.response_status === "booked",
+    ).length;
+    const ignored = outreachAttempts.filter(
+      (o) => o.response_status === "ignored",
+    ).length;
     const responseRate = total > 0 ? Math.round((responded / total) * 100) : 0;
     const conversionRate = total > 0 ? Math.round((booked / total) * 100) : 0;
     const totalRevenue = outreachAttempts
-      .filter(o => o.conversion_value)
+      .filter((o) => o.conversion_value)
       .reduce((sum, o) => sum + o.conversion_value, 0);
 
-    return { total, responded, booked, ignored, responseRate, conversionRate, totalRevenue };
+    return {
+      total,
+      responded,
+      booked,
+      ignored,
+      responseRate,
+      conversionRate,
+      totalRevenue,
+    };
   }, [outreachAttempts]);
 
   const handleSendOutreach = async (opportunity) => {
@@ -65,12 +83,30 @@ export default function ProactiveOutreach() {
   };
 
   const triggerReasons = {
-    overdue_rebook: { label: "Overdue Rebook", color: "bg-yellow-500/20 text-yellow-300" },
-    vip_inactive: { label: "VIP Inactive", color: "bg-red-500/20 text-red-300" },
-    seasonal_service: { label: "Seasonal", color: "bg-blue-500/20 text-blue-300" },
-    unexpected_availability: { label: "Availability Opened", color: "bg-green-500/20 text-green-300" },
-    intent_no_book: { label: "Intent No Book", color: "bg-orange-500/20 text-orange-300" },
-    repeatable_service: { label: "Repeatable Service", color: "bg-purple-500/20 text-purple-300" },
+    overdue_rebook: {
+      label: "Overdue Rebook",
+      color: "bg-yellow-500/20 text-yellow-300",
+    },
+    vip_inactive: {
+      label: "VIP Inactive",
+      color: "bg-red-500/20 text-red-300",
+    },
+    seasonal_service: {
+      label: "Seasonal",
+      color: "bg-blue-500/20 text-blue-300",
+    },
+    unexpected_availability: {
+      label: "Availability Opened",
+      color: "bg-green-500/20 text-green-300",
+    },
+    intent_no_book: {
+      label: "Intent No Book",
+      color: "bg-orange-500/20 text-orange-300",
+    },
+    repeatable_service: {
+      label: "Repeatable Service",
+      color: "bg-purple-500/20 text-purple-300",
+    },
     vip_touch: { label: "VIP Touch", color: "bg-pink-500/20 text-pink-300" },
   };
 
@@ -101,7 +137,9 @@ export default function ProactiveOutreach() {
             className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-[#84CC16]/10 border border-[#84CC16]/20"
           >
             <Sparkles className="w-4 h-4 text-[#84CC16]" />
-            <span className="text-sm font-medium text-[#84CC16]">Autonomous Revenue Engine</span>
+            <span className="text-sm font-medium text-[#84CC16]">
+              Autonomous Revenue Engine
+            </span>
           </motion.div>
           <h1 className="text-5xl font-bold mb-4 tracking-tight">
             Proactive Outreach Intelligence
@@ -119,8 +157,12 @@ export default function ProactiveOutreach() {
                 <p className="text-gray-400 text-sm">Conversion Rate</p>
                 <Target className="w-5 h-5 text-[#84CC16]" />
               </div>
-              <p className="text-3xl font-bold text-white">{stats.conversionRate}%</p>
-              <p className="text-gray-500 text-xs mt-1">{stats.booked} of {stats.total} booked</p>
+              <p className="text-3xl font-bold text-white">
+                {stats.conversionRate}%
+              </p>
+              <p className="text-gray-500 text-xs mt-1">
+                {stats.booked} of {stats.total} booked
+              </p>
             </CardContent>
           </Card>
 
@@ -130,8 +172,12 @@ export default function ProactiveOutreach() {
                 <p className="text-gray-400 text-sm">Response Rate</p>
                 <CheckCircle2 className="w-5 h-5 text-blue-500" />
               </div>
-              <p className="text-3xl font-bold text-white">{stats.responseRate}%</p>
-              <p className="text-gray-500 text-xs mt-1">{stats.responded} responded</p>
+              <p className="text-3xl font-bold text-white">
+                {stats.responseRate}%
+              </p>
+              <p className="text-gray-500 text-xs mt-1">
+                {stats.responded} responded
+              </p>
             </CardContent>
           </Card>
 
@@ -141,7 +187,9 @@ export default function ProactiveOutreach() {
                 <p className="text-gray-400 text-sm">Generated Revenue</p>
                 <TrendingUp className="w-5 h-5 text-green-500" />
               </div>
-              <p className="text-3xl font-bold text-white">${stats.totalRevenue}</p>
+              <p className="text-3xl font-bold text-white">
+                ${stats.totalRevenue}
+              </p>
               <p className="text-gray-500 text-xs mt-1">From outreach</p>
             </CardContent>
           </Card>
@@ -152,7 +200,9 @@ export default function ProactiveOutreach() {
                 <p className="text-gray-400 text-sm">Active Opportunities</p>
                 <AlertCircle className="w-5 h-5 text-yellow-500" />
               </div>
-              <p className="text-3xl font-bold text-white">{opportunities.length}</p>
+              <p className="text-3xl font-bold text-white">
+                {opportunities.length}
+              </p>
               <p className="text-gray-500 text-xs mt-1">Ready to contact</p>
             </CardContent>
           </Card>
@@ -161,10 +211,16 @@ export default function ProactiveOutreach() {
         {/* Tabs */}
         <Tabs defaultValue="opportunities" className="space-y-6">
           <TabsList className="bg-[#141414] border border-[#1f1f1f]">
-            <TabsTrigger value="opportunities" className="data-[state=active]:bg-[#84CC16] data-[state=active]:text-black">
+            <TabsTrigger
+              value="opportunities"
+              className="data-[state=active]:bg-[#84CC16] data-[state=active]:text-black"
+            >
               Opportunities ({opportunities.length})
             </TabsTrigger>
-            <TabsTrigger value="history" className="data-[state=active]:bg-[#84CC16] data-[state=active]:text-black">
+            <TabsTrigger
+              value="history"
+              className="data-[state=active]:bg-[#84CC16] data-[state=active]:text-black"
+            >
               Outreach History
             </TabsTrigger>
           </TabsList>
@@ -180,8 +236,12 @@ export default function ProactiveOutreach() {
               <Card className="bg-[#141414] border-[#1f1f1f]">
                 <CardContent className="text-center py-12">
                   <CheckCircle2 className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold text-gray-400 mb-2">All caught up</h3>
-                  <p className="text-gray-500">No new outreach opportunities at the moment</p>
+                  <h3 className="text-xl font-semibold text-gray-400 mb-2">
+                    All caught up
+                  </h3>
+                  <p className="text-gray-500">
+                    No new outreach opportunities at the moment
+                  </p>
                 </CardContent>
               </Card>
             ) : (
@@ -198,17 +258,30 @@ export default function ProactiveOutreach() {
                         <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
                           <div className="flex-1">
                             <div className="flex items-center gap-3 mb-3">
-                              <CardTitle className="text-white text-xl">{opp.client_name}</CardTitle>
+                              <CardTitle className="text-white text-xl">
+                                {opp.client_name}
+                              </CardTitle>
                               {opp.client_value_tier === "vip" && (
-                                <Badge className="bg-[#84CC16] text-black border-0">VIP</Badge>
+                                <Badge className="bg-[#84CC16] text-black border-0">
+                                  VIP
+                                </Badge>
                               )}
                             </div>
                             <div className="flex flex-wrap gap-2 mb-3">
-                              <Badge className={triggerReasons[opp.trigger_reason]?.color || "bg-gray-500/20 text-gray-300"}>
-                                {triggerReasons[opp.trigger_reason]?.label || opp.trigger_reason}
+                              <Badge
+                                className={
+                                  triggerReasons[opp.trigger_reason]?.color ||
+                                  "bg-gray-500/20 text-gray-300"
+                                }
+                              >
+                                {triggerReasons[opp.trigger_reason]?.label ||
+                                  opp.trigger_reason}
                               </Badge>
                               {opp.days_since_last_visit && (
-                                <Badge variant="outline" className="border-gray-600 text-gray-400">
+                                <Badge
+                                  variant="outline"
+                                  className="border-gray-600 text-gray-400"
+                                >
                                   <Clock className="w-3 h-3 mr-1" />
                                   {opp.days_since_last_visit} days ago
                                 </Badge>
@@ -220,7 +293,9 @@ export default function ProactiveOutreach() {
                               )}
                             </div>
                             <div className="bg-[#1f1f1f] p-3 rounded-lg border border-[#2a2a2a]">
-                              <p className="text-gray-300 text-sm italic">"{opp.suggested_message}"</p>
+                              <p className="text-gray-300 text-sm italic">
+                                "{opp.suggested_message}"
+                              </p>
                             </div>
                           </div>
                           <Button
@@ -251,14 +326,19 @@ export default function ProactiveOutreach() {
               <Card className="bg-[#141414] border-[#1f1f1f]">
                 <CardContent className="text-center py-12">
                   <Send className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold text-gray-400 mb-2">No outreach history yet</h3>
-                  <p className="text-gray-500">Start sending proactive messages to see results</p>
+                  <h3 className="text-xl font-semibold text-gray-400 mb-2">
+                    No outreach history yet
+                  </h3>
+                  <p className="text-gray-500">
+                    Start sending proactive messages to see results
+                  </p>
                 </CardContent>
               </Card>
             ) : (
               <div className="space-y-4">
                 {outreachAttempts.map((attempt, index) => {
-                  const ChannelIcon = channelIcons[attempt.channel] || MessageSquare;
+                  const ChannelIcon =
+                    channelIcons[attempt.channel] || MessageSquare;
                   return (
                     <motion.div
                       key={attempt.id}
@@ -271,25 +351,46 @@ export default function ProactiveOutreach() {
                           <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
                             <div className="flex-1">
                               <div className="flex items-center gap-3 mb-3">
-                                <CardTitle className="text-white text-xl">{attempt.client_name}</CardTitle>
+                                <CardTitle className="text-white text-xl">
+                                  {attempt.client_name}
+                                </CardTitle>
                                 {attempt.client_value_tier === "vip" && (
-                                  <Badge className="bg-[#84CC16] text-black border-0">VIP</Badge>
+                                  <Badge className="bg-[#84CC16] text-black border-0">
+                                    VIP
+                                  </Badge>
                                 )}
                               </div>
                               <div className="flex flex-wrap gap-2 mb-3">
-                                <Badge className={triggerReasons[attempt.trigger_reason]?.color || "bg-gray-500/20 text-gray-300"}>
-                                  {triggerReasons[attempt.trigger_reason]?.label || attempt.trigger_reason}
+                                <Badge
+                                  className={
+                                    triggerReasons[attempt.trigger_reason]
+                                      ?.color || "bg-gray-500/20 text-gray-300"
+                                  }
+                                >
+                                  {triggerReasons[attempt.trigger_reason]
+                                    ?.label || attempt.trigger_reason}
                                 </Badge>
-                                <Badge variant="outline" className="border-gray-600 text-gray-400">
+                                <Badge
+                                  variant="outline"
+                                  className="border-gray-600 text-gray-400"
+                                >
                                   <ChannelIcon className="w-3 h-3 mr-1" />
                                   {attempt.channel}
                                 </Badge>
-                                <Badge variant="outline" className="border-[#84CC16]/30 text-[#84CC16]">
-                                  {format(parseISO(attempt.created_date), "MMM d, yyyy")}
+                                <Badge
+                                  variant="outline"
+                                  className="border-[#84CC16]/30 text-[#84CC16]"
+                                >
+                                  {format(
+                                    parseISO(attempt.created_date),
+                                    "MMM d, yyyy",
+                                  )}
                                 </Badge>
                               </div>
                               <div className="bg-[#1f1f1f] p-3 rounded-lg border border-[#2a2a2a] mb-3">
-                                <p className="text-gray-400 text-sm">{attempt.message_sent}</p>
+                                <p className="text-gray-400 text-sm">
+                                  {attempt.message_sent}
+                                </p>
                               </div>
                               {attempt.conversion_value && (
                                 <p className="text-[#84CC16] text-sm font-medium">
@@ -297,7 +398,9 @@ export default function ProactiveOutreach() {
                                 </p>
                               )}
                             </div>
-                            <Badge className={`${statusColors[attempt.response_status]} border`}>
+                            <Badge
+                              className={`${statusColors[attempt.response_status]} border`}
+                            >
                               {attempt.response_status}
                             </Badge>
                           </div>
@@ -317,9 +420,13 @@ export default function ProactiveOutreach() {
             <div className="flex items-start gap-3">
               <Sparkles className="w-5 h-5 text-[#84CC16] mt-1 flex-shrink-0" />
               <div>
-                <h3 className="font-semibold text-white mb-2">Intelligent Outreach Protocol</h3>
+                <h3 className="font-semibold text-white mb-2">
+                  Intelligent Outreach Protocol
+                </h3>
                 <div className="space-y-1 text-gray-300 text-sm">
-                  <p>✓ Clients ignored twice: 30-day pause automatically applied</p>
+                  <p>
+                    ✓ Clients ignored twice: 30-day pause automatically applied
+                  </p>
                   <p>✓ Only high-value triggers initiate contact</p>
                   <p>✓ Every message is personalized and intentional</p>
                   <p>✓ Never bulk campaigns, never spam</p>

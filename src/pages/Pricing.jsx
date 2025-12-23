@@ -13,8 +13,8 @@ export default function Pricing() {
         "Square integration",
         "Basic analytics",
         "Up to 100 bookings/month",
-        "Email support"
-      ]
+        "Email support",
+      ],
     },
     {
       name: "Professional",
@@ -27,8 +27,8 @@ export default function Pricing() {
         "Advanced analytics",
         "Retention campaigns",
         "Product recommendations",
-        "Priority support"
-      ]
+        "Priority support",
+      ],
     },
     {
       name: "Enterprise",
@@ -40,15 +40,14 @@ export default function Pricing() {
         "White-label options",
         "Custom integrations",
         "Dedicated account manager",
-        "Custom training"
-      ]
-    }
+        "Custom training",
+      ],
+    },
   ];
 
   return (
     <div className="min-h-screen bg-black text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
-        
         <div className="text-center mb-16">
           <motion.div
             initial={{ opacity: 0, y: -20 }}
@@ -56,7 +55,9 @@ export default function Pricing() {
             className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full bg-white/[0.03] border border-white/[0.08]"
           >
             <Sparkles className="w-4 h-4 text-white/60" />
-            <span className="text-sm tracking-wide text-white/60">Simple, transparent pricing</span>
+            <span className="text-sm tracking-wide text-white/60">
+              Simple, transparent pricing
+            </span>
           </motion.div>
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-light mb-6 tracking-tight">
             Choose your plan
@@ -75,8 +76,8 @@ export default function Pricing() {
               transition={{ delay: idx * 0.1 }}
               className={`border rounded-lg p-6 sm:p-8 transition-all ${
                 plan.featured
-                  ? 'border-white/20 bg-white/[0.02]'
-                  : 'border-white/[0.08] hover:border-white/[0.15]'
+                  ? "border-white/20 bg-white/[0.02]"
+                  : "border-white/[0.08] hover:border-white/[0.15]"
               }`}
             >
               {plan.featured && (
@@ -84,20 +85,24 @@ export default function Pricing() {
                   RECOMMENDED
                 </div>
               )}
-              
-              <h3 className="text-xl sm:text-2xl font-light mb-2">{plan.name}</h3>
+
+              <h3 className="text-xl sm:text-2xl font-light mb-2">
+                {plan.name}
+              </h3>
               <p className="text-sm text-white/40 mb-6">{plan.description}</p>
-              
+
               <div className="mb-8">
-                <span className="text-4xl sm:text-5xl font-light">${plan.price}</span>
+                <span className="text-4xl sm:text-5xl font-light">
+                  ${plan.price}
+                </span>
                 <span className="text-white/40">/month</span>
               </div>
 
               <button
                 className={`w-full py-3 mb-8 transition-all text-sm tracking-wide ${
                   plan.featured
-                    ? 'bg-white text-black hover:bg-white/90'
-                    : 'border border-white/[0.08] hover:border-white/20'
+                    ? "bg-white text-black hover:bg-white/90"
+                    : "border border-white/[0.08] hover:border-white/20"
                 }`}
               >
                 Start free trial
@@ -123,7 +128,6 @@ export default function Pricing() {
             Talk to sales
           </button>
         </div>
-
       </div>
     </div>
   );

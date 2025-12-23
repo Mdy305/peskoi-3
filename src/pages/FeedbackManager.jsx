@@ -2,7 +2,13 @@ import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { Sparkles, TrendingUp, AlertCircle, CheckCircle2, MessageSquare } from "lucide-react";
+import {
+  Sparkles,
+  TrendingUp,
+  AlertCircle,
+  CheckCircle2,
+  MessageSquare,
+} from "lucide-react";
 
 export default function FeedbackManager() {
   const [selectedRequest, setSelectedRequest] = useState(null);
@@ -10,24 +16,26 @@ export default function FeedbackManager() {
   const queryClient = useQueryClient();
 
   const { data: reviewRequests = [], isLoading } = useQuery({
-    queryKey: ['reviewRequests'],
-    queryFn: () => base44.entities.ReviewRequest.list('-sent_date')
+    queryKey: ["reviewRequests"],
+    queryFn: () => base44.entities.ReviewRequest.list("-sent_date"),
   });
 
   const triggerFeedbackMutation = useMutation({
-    mutationFn: () => base44.functions.invoke('triggerPostAppointmentFeedback', {}),
+    mutationFn: () =>
+      base44.functions.invoke("triggerPostAppointmentFeedback", {}),
     onSuccess: () => {
-      queryClient.invalidateQueries(['reviewRequests']);
-    }
+      queryClient.invalidateQueries(["reviewRequests"]);
+    },
   });
 
   const processFeedbackMutation = useMutation({
-    mutationFn: (data) => base44.functions.invoke('processFeedbackResponse', data),
+    mutationFn: (data) =>
+      base44.functions.invoke("processFeedbackResponse", data),
     onSuccess: () => {
-      queryClient.invalidateQueries(['reviewRequests']);
+      queryClient.invalidateQueries(["reviewRequests"]);
       setSelectedRequest(null);
       setSimulatedResponse("");
-    }
+    },
   });
 
   const handleSimulateResponse = () => {
@@ -38,20 +46,24 @@ export default function FeedbackManager() {
       client_response: simulatedResponse,
       client_name: selectedRequest.client_name,
       client_phone: selectedRequest.client_phone,
-      client_email: selectedRequest.client_email
+      client_email: selectedRequest.client_email,
     });
   };
 
-  const pendingRequests = reviewRequests.filter(r => r.status === 'sent');
-  const completedRequests = reviewRequests.filter(r => r.status === 'completed');
+  const pendingRequests = reviewRequests.filter((r) => r.status === "sent");
+  const completedRequests = reviewRequests.filter(
+    (r) => r.status === "completed",
+  );
 
   const stats = {
     total: reviewRequests.length,
     pending: pendingRequests.length,
-    positive: completedRequests.filter(r => r.feedback_text?.length > 0).length,
-    responseRate: reviewRequests.length > 0 
-      ? Math.round((completedRequests.length / reviewRequests.length) * 100) 
-      : 0
+    positive: completedRequests.filter((r) => r.feedback_text?.length > 0)
+      .length,
+    responseRate:
+      reviewRequests.length > 0
+        ? Math.round((completedRequests.length / reviewRequests.length) * 100)
+        : 0,
   };
 
   if (isLoading) {
@@ -61,8 +73,9 @@ export default function FeedbackManager() {
   return (
     <div className="min-h-screen bg-black text-white">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
-
-        <p className="text-xs text-white/40 tracking-[0.15em] uppercase mb-12">Feedback</p>
+        <p className="text-xs text-white/40 tracking-[0.15em] uppercase mb-12">
+          Feedback
+        </p>
 
         {/* Stats */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 mb-16">
@@ -110,7 +123,9 @@ export default function FeedbackManager() {
             disabled={triggerFeedbackMutation.isPending}
             className="border border-white/[0.08] px-6 py-3 hover:border-white/20 transition-colors text-sm tracking-wide"
           >
-            {triggerFeedbackMutation.isPending ? 'Processing...' : 'Check for new feedback'}
+            {triggerFeedbackMutation.isPending
+              ? "Processing..."
+              : "Check for new feedback"}
           </button>
         </div>
 
@@ -133,10 +148,13 @@ export default function FeedbackManager() {
                     <div>
                       <p className="text-sm mb-2">{request.client_name}</p>
                       <p className="text-xs text-white/40">
-                        {new Date(request.sent_date).toLocaleDateString('en-US', {
-                          month: 'short',
-                          day: 'numeric'
-                        })}
+                        {new Date(request.sent_date).toLocaleDateString(
+                          "en-US",
+                          {
+                            month: "short",
+                            day: "numeric",
+                          },
+                        )}
                       </p>
                     </div>
                     <span className="text-xs text-white/40">
@@ -156,7 +174,10 @@ export default function FeedbackManager() {
                       <div className="flex gap-2">
                         <button
                           onClick={handleSimulateResponse}
-                          disabled={processFeedbackMutation.isPending || !simulatedResponse}
+                          disabled={
+                            processFeedbackMutation.isPending ||
+                            !simulatedResponse
+                          }
                           className="border border-white/[0.08] px-4 py-2 hover:bg-white/5 transition-colors text-xs"
                         >
                           Process
@@ -206,10 +227,13 @@ export default function FeedbackManager() {
                   <div className="flex justify-between items-start mb-2">
                     <p className="text-sm">{request.client_name}</p>
                     <span className="text-xs text-white/40">
-                      {new Date(request.response_date).toLocaleDateString('en-US', {
-                        month: 'short',
-                        day: 'numeric'
-                      })}
+                      {new Date(request.response_date).toLocaleDateString(
+                        "en-US",
+                        {
+                          month: "short",
+                          day: "numeric",
+                        },
+                      )}
                     </span>
                   </div>
                   {request.feedback_text && (
@@ -228,7 +252,6 @@ export default function FeedbackManager() {
             No feedback requests yet
           </p>
         )}
-
       </div>
     </div>
   );

@@ -7,14 +7,14 @@ export default function ConnectSquare() {
 
   const connectMutation = useMutation({
     mutationFn: async () => {
-      const response = await base44.functions.invoke('squareOAuthInit', {});
+      const response = await base44.functions.invoke("squareOAuthInit", {});
       return response.data;
     },
     onSuccess: (data) => {
       if (data.authorization_url) {
         window.location.href = data.authorization_url;
       }
-    }
+    },
   });
 
   const handleConnect = () => {
@@ -41,7 +41,7 @@ export default function ConnectSquare() {
                      hover:bg-white/90 transition-colors duration-300
                      disabled:opacity-40 disabled:cursor-not-allowed"
         >
-          {connecting ? 'Redirecting to Square...' : 'Connect Square'}
+          {connecting ? "Redirecting to Square..." : "Connect Square"}
         </button>
       </div>
     </div>

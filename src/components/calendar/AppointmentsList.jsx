@@ -5,13 +5,19 @@ import { Badge } from "@/components/ui/badge";
 import { Calendar, Clock, User, Phone, Edit2, Trash2 } from "lucide-react";
 
 const statusColors = {
-  "bokad": "bg-yellow-500/10 text-yellow-500 border-yellow-500/20",
-  "bekräftad": "bg-blue-500/10 text-blue-500 border-blue-500/20",
-  "genomförd": "bg-[#84CC16]/10 text-[#84CC16] border-[#84CC16]/20",
-  "avbokad": "bg-red-500/10 text-red-500 border-red-500/20"
+  bokad: "bg-yellow-500/10 text-yellow-500 border-yellow-500/20",
+  bekräftad: "bg-blue-500/10 text-blue-500 border-blue-500/20",
+  genomförd: "bg-[#84CC16]/10 text-[#84CC16] border-[#84CC16]/20",
+  avbokad: "bg-red-500/10 text-red-500 border-red-500/20",
 };
 
-export default function AppointmentsList({ appointments, title, onEdit, onDelete, showDate = false }) {
+export default function AppointmentsList({
+  appointments,
+  title,
+  onEdit,
+  onDelete,
+  showDate = false,
+}) {
   if (!appointments || appointments.length === 0) {
     return (
       <Card className="bg-[#1A1A1A] border-[#2A2A2A]">
@@ -43,8 +49,14 @@ export default function AppointmentsList({ appointments, title, onEdit, onDelete
               <div className="flex items-start justify-between mb-3">
                 <div className="flex-1">
                   <div className="flex items-start justify-between mb-2">
-                    <h4 className="text-white font-medium">{appointment.service}</h4>
-                    <Badge className={statusColors[appointment.status] || statusColors.bokad}>
+                    <h4 className="text-white font-medium">
+                      {appointment.service}
+                    </h4>
+                    <Badge
+                      className={
+                        statusColors[appointment.status] || statusColors.bokad
+                      }
+                    >
                       {appointment.status}
                     </Badge>
                   </div>
@@ -56,9 +68,11 @@ export default function AppointmentsList({ appointments, title, onEdit, onDelete
                     {showDate && (
                       <div className="flex items-center gap-1">
                         <Calendar className="w-3 h-3" />
-                        {new Date(appointment.appointment_date).toLocaleDateString('sv-SE', {
-                          day: 'numeric',
-                          month: 'short'
+                        {new Date(
+                          appointment.appointment_date,
+                        ).toLocaleDateString("sv-SE", {
+                          day: "numeric",
+                          month: "short",
                         })}
                       </div>
                     )}
@@ -73,7 +87,7 @@ export default function AppointmentsList({ appointments, title, onEdit, onDelete
                   </div>
                 </div>
               </div>
-              
+
               <div className="flex gap-2 pt-3 border-t border-[#2A2A2A]">
                 <Button
                   variant="outline"

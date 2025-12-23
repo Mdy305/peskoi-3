@@ -9,7 +9,10 @@ export default function AdvancedAnalytics() {
   const { data: analyticsData, isLoading } = useQuery({
     queryKey: ["advancedAnalytics"],
     queryFn: async () => {
-      const response = await base44.functions.invoke("generateAdvancedAnalytics", {});
+      const response = await base44.functions.invoke(
+        "generateAdvancedAnalytics",
+        {},
+      );
       return response.data;
     },
   });
@@ -21,7 +24,7 @@ export default function AdvancedAnalytics() {
     { id: "churn", label: "Churn Prediction" },
     { id: "retention", label: "Retention Campaigns" },
     { id: "services", label: "Service Trends" },
-    { id: "stylists", label: "Stylist Performance" }
+    { id: "stylists", label: "Stylist Performance" },
   ];
 
   return (
@@ -127,8 +130,12 @@ export default function AdvancedAnalytics() {
                       </div>
                       <div className="text-white text-2xl font-light">
                         {rawData.total_clients > 0
-                          ? Math.round((rawData.at_risk_count / rawData.total_clients) * 100)
-                          : 0}%
+                          ? Math.round(
+                              (rawData.at_risk_count / rawData.total_clients) *
+                                100,
+                            )
+                          : 0}
+                        %
                       </div>
                     </div>
                   </div>
@@ -159,7 +166,8 @@ export default function AdvancedAnalytics() {
                       MOST EFFECTIVE STRATEGY
                     </div>
                     <div className="text-white text-lg tracking-wide">
-                      {analytics.retention_effectiveness?.most_effective_strategy || "None"}
+                      {analytics.retention_effectiveness
+                        ?.most_effective_strategy || "None"}
                     </div>
                   </div>
 
@@ -168,7 +176,8 @@ export default function AdvancedAnalytics() {
                       KEY INSIGHT
                     </div>
                     <div className="text-white text-base tracking-wide leading-relaxed">
-                      {analytics.retention_effectiveness?.key_insight || "No data"}
+                      {analytics.retention_effectiveness?.key_insight ||
+                        "No data"}
                     </div>
                   </div>
 

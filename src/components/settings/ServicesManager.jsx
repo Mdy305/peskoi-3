@@ -8,7 +8,7 @@ import { Plus, Trash2, Save, Scissors } from "lucide-react";
 export default function ServicesManager({ business, onSave }) {
   const [services, setServices] = useState([
     { name: "Haircut", duration: 45, price: 45 },
-    { name: "Coloring", duration: 120, price: 110 }
+    { name: "Coloring", duration: 120, price: 110 },
   ]);
 
   useEffect(() => {
@@ -53,7 +53,9 @@ export default function ServicesManager({ business, onSave }) {
                 className="p-3 sm:p-4 rounded-lg bg-black border border-[#1f1f1f] space-y-3 sm:space-y-4"
               >
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs sm:text-sm text-gray-400">Service #{index + 1}</span>
+                  <span className="text-xs sm:text-sm text-gray-400">
+                    Service #{index + 1}
+                  </span>
                   {services.length > 1 && (
                     <Button
                       type="button"
@@ -69,10 +71,14 @@ export default function ServicesManager({ business, onSave }) {
 
                 <div className="grid gap-3 sm:gap-4">
                   <div className="space-y-2">
-                    <Label className="text-xs sm:text-sm text-gray-400">Service Name</Label>
+                    <Label className="text-xs sm:text-sm text-gray-400">
+                      Service Name
+                    </Label>
                     <Input
                       value={service.name}
-                      onChange={(e) => updateService(index, "name", e.target.value)}
+                      onChange={(e) =>
+                        updateService(index, "name", e.target.value)
+                      }
                       className="bg-[#0a0a0a] border-[#1f1f1f] text-white text-sm"
                       placeholder="e.g. Haircut"
                     />
@@ -80,11 +86,19 @@ export default function ServicesManager({ business, onSave }) {
 
                   <div className="grid grid-cols-2 gap-3">
                     <div className="space-y-2">
-                      <Label className="text-xs sm:text-sm text-gray-400">Duration (min)</Label>
+                      <Label className="text-xs sm:text-sm text-gray-400">
+                        Duration (min)
+                      </Label>
                       <Input
                         type="number"
                         value={service.duration}
-                        onChange={(e) => updateService(index, "duration", parseInt(e.target.value))}
+                        onChange={(e) =>
+                          updateService(
+                            index,
+                            "duration",
+                            parseInt(e.target.value),
+                          )
+                        }
                         className="bg-[#0a0a0a] border-[#1f1f1f] text-white text-sm"
                         min="15"
                         step="15"
@@ -92,11 +106,19 @@ export default function ServicesManager({ business, onSave }) {
                     </div>
 
                     <div className="space-y-2">
-                      <Label className="text-xs sm:text-sm text-gray-400">Price ($)</Label>
+                      <Label className="text-xs sm:text-sm text-gray-400">
+                        Price ($)
+                      </Label>
                       <Input
                         type="number"
                         value={service.price}
-                        onChange={(e) => updateService(index, "price", parseInt(e.target.value))}
+                        onChange={(e) =>
+                          updateService(
+                            index,
+                            "price",
+                            parseInt(e.target.value),
+                          )
+                        }
                         className="bg-[#0a0a0a] border-[#1f1f1f] text-white text-sm"
                         min="0"
                       />
@@ -117,7 +139,10 @@ export default function ServicesManager({ business, onSave }) {
               <Plus className="w-4 h-4 mr-2" />
               Add Service
             </Button>
-            <Button type="submit" className="bg-[#84CC16] hover:bg-[#84CC16]/90 text-black w-full sm:w-auto">
+            <Button
+              type="submit"
+              className="bg-[#84CC16] hover:bg-[#84CC16]/90 text-black w-full sm:w-auto"
+            >
               <Save className="w-4 h-4 mr-2" />
               Save Changes
             </Button>

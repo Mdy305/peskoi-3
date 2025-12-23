@@ -10,25 +10,29 @@ export default function Book() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
   const [availableSlots, setAvailableSlots] = useState([]);
-  const [clientInfo, setClientInfo] = useState({ name: "", phone: "", email: "" });
+  const [clientInfo, setClientInfo] = useState({
+    name: "",
+    phone: "",
+    email: "",
+  });
   const [booking, setBooking] = useState(false);
 
   // Get services from Square
   const { data: servicesData } = useQuery({
-    queryKey: ['squareServices'],
+    queryKey: ["squareServices"],
     queryFn: async () => {
-      const res = await base44.functions.invoke('squareGetServices', {});
+      const res = await base44.functions.invoke("squareGetServices", {});
       return res.data;
-    }
+    },
   });
 
   // Get stylists from Square
   const { data: stylistsData } = useQuery({
-    queryKey: ['squareStylists'],
+    queryKey: ["squareStylists"],
     queryFn: async () => {
-      const res = await base44.functions.invoke('squareGetTeamMembers', {});
+      const res = await base44.functions.invoke("squareGetTeamMembers", {});
       return res.data;
-    }
+    },
   });
 
   const services = servicesData?.services || [];
@@ -43,10 +47,10 @@ export default function Book() {
 
   const fetchAvailability = async () => {
     try {
-      const res = await base44.functions.invoke('squareGetAvailability', {
+      const res = await base44.functions.invoke("squareGetAvailability", {
         service_variation_id: selectedService.variations[0].id,
         team_member_id: selectedStylist.id,
-        start_date: selectedDate
+        start_date: selectedDate,
       });
       setAvailableSlots(res.data?.availability || []);
     } catch (e) {
@@ -56,19 +60,19 @@ export default function Book() {
 
   const createBooking = useMutation({
     mutationFn: async () => {
-      const res = await base44.functions.invoke('squareCreateBooking', {
+      const res = await base44.functions.invoke("squareCreateBooking", {
         service_variation_id: selectedService.variations[0].id,
         team_member_id: selectedStylist.id,
         start_at: selectedTime,
         customer_note: clientInfo.name,
         customer_phone: clientInfo.phone,
-        customer_email: clientInfo.email
+        customer_email: clientInfo.email,
       });
       return res.data;
     },
     onSuccess: () => {
       setStep(5);
-    }
+    },
   });
 
   const handleBook = () => {
@@ -79,29 +83,28 @@ export default function Book() {
   const nextWeekDates = Array.from({ length: 7 }, (_, i) => {
     const date = new Date();
     date.setDate(date.getDate() + i);
-    return date.toISOString().split('T')[0];
+    return date.toISOString().split("T")[0];
   });
 
   return (
     <div className="min-h-screen bg-black text-white">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
-
         {/* Progress */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
           className="mb-16"
         >
           <div className="flex gap-2">
-            {[1, 2, 3, 4].map(s => (
+            {[1, 2, 3, 4].map((s) => (
               <motion.div
                 key={s}
                 initial={{ scaleX: 0 }}
                 animate={{ scaleX: s <= step ? 1 : 0 }}
                 transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                 className={`h-[2px] flex-1 origin-left ${
-                  s <= step ? 'bg-white' : 'bg-white/10'
+                  s <= step ? "bg-white" : "bg-white/10"
                 }`}
               />
             ))}
@@ -118,7 +121,9 @@ export default function Book() {
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             >
-              <p className="text-xs text-white/40 tracking-[0.15em] uppercase mb-8">Select service</p>
+              <p className="text-xs text-white/40 tracking-[0.15em] uppercase mb-8">
+                Select service
+              </p>
               <div className="space-y-2">
                 {services.map((service, index) => (
                   <motion.button
@@ -128,7 +133,7 @@ export default function Book() {
                     transition={{
                       duration: 0.4,
                       delay: index * 0.05,
-                      ease: [0.22, 1, 0.36, 1]
+                      ease: [0.22, 1, 0.36, 1],
                     }}
                     onClick={() => {
                       setSelectedService(service);
@@ -138,8 +143,16 @@ export default function Book() {
                   >
                     <p className="text-sm mb-2">{service.name}</p>
                     <div className="flex justify-between text-xs text-white/40">
-                      <span>{service.variations[0]?.duration_minutes || 0} min</span>
-                      <span>${((service.variations[0]?.price_money?.amount || 0) / 100).toFixed(0)}</span>
+                      <span>
+                        {service.variations[0]?.duration_minutes || 0} min
+                      </span>
+                      <span>
+                        $
+                        {(
+                          (service.variations[0]?.price_money?.amount || 0) /
+                          100
+                        ).toFixed(0)}
+                      </span>
                     </div>
                   </motion.button>
                 ))}
@@ -165,7 +178,9 @@ export default function Book() {
               >
                 ← Back
               </motion.button>
-              <p className="text-xs text-white/40 tracking-[0.15em] uppercase mb-8">Select stylist</p>
+              <p className="text-xs text-white/40 tracking-[0.15em] uppercase mb-8">
+                Select stylist
+              </p>
               <div className="space-y-2">
                 {stylists.map((stylist, index) => (
                   <motion.button
@@ -175,7 +190,7 @@ export default function Book() {
                     transition={{
                       duration: 0.4,
                       delay: index * 0.05,
-                      ease: [0.22, 1, 0.36, 1]
+                      ease: [0.22, 1, 0.36, 1],
                     }}
                     onClick={() => {
                       setSelectedStylist(stylist);
@@ -183,7 +198,9 @@ export default function Book() {
                     }}
                     className="w-full text-left border border-white/[0.08] p-6 hover:border-white/20 hover:bg-white/[0.02] transition-all duration-300"
                   >
-                    <p className="text-sm">{stylist.given_name} {stylist.family_name}</p>
+                    <p className="text-sm">
+                      {stylist.given_name} {stylist.family_name}
+                    </p>
                   </motion.button>
                 ))}
               </div>
@@ -208,8 +225,10 @@ export default function Book() {
               >
                 ← Back
               </motion.button>
-              <p className="text-xs text-white/40 tracking-[0.15em] uppercase mb-8">Select date</p>
-              
+              <p className="text-xs text-white/40 tracking-[0.15em] uppercase mb-8">
+                Select date
+              </p>
+
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-12">
                 {nextWeekDates.map((date, index) => (
                   <motion.button
@@ -219,20 +238,20 @@ export default function Book() {
                     transition={{
                       duration: 0.3,
                       delay: index * 0.04,
-                      ease: [0.22, 1, 0.36, 1]
+                      ease: [0.22, 1, 0.36, 1],
                     }}
                     onClick={() => setSelectedDate(date)}
                     className={`border p-4 transition-all duration-300 ${
                       selectedDate === date
-                        ? 'border-white bg-white/5 scale-[1.02]'
-                        : 'border-white/[0.08] hover:border-white/20 hover:bg-white/[0.02]'
+                        ? "border-white bg-white/5 scale-[1.02]"
+                        : "border-white/[0.08] hover:border-white/20 hover:bg-white/[0.02]"
                     }`}
                   >
                     <p className="text-xs">
-                      {new Date(date).toLocaleDateString('en-US', {
-                        weekday: 'short',
-                        month: 'short',
-                        day: 'numeric'
+                      {new Date(date).toLocaleDateString("en-US", {
+                        weekday: "short",
+                        month: "short",
+                        day: "numeric",
                       })}
                     </p>
                   </motion.button>
@@ -245,7 +264,9 @@ export default function Book() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4 }}
                 >
-                  <p className="text-xs text-white/40 tracking-[0.15em] uppercase mb-8">Select time</p>
+                  <p className="text-xs text-white/40 tracking-[0.15em] uppercase mb-8">
+                    Select time
+                  </p>
                   <div className="grid grid-cols-3 gap-2">
                     {availableSlots.map((slot, index) => (
                       <motion.button
@@ -255,7 +276,7 @@ export default function Book() {
                         transition={{
                           duration: 0.3,
                           delay: index * 0.03,
-                          ease: [0.22, 1, 0.36, 1]
+                          ease: [0.22, 1, 0.36, 1],
                         }}
                         onClick={() => {
                           setSelectedTime(slot.start_at);
@@ -263,9 +284,9 @@ export default function Book() {
                         }}
                         className="border border-white/[0.08] p-3 hover:border-white/20 hover:bg-white/[0.02] transition-all duration-300 text-xs"
                       >
-                        {new Date(slot.start_at).toLocaleTimeString('en-US', {
-                          hour: 'numeric',
-                          minute: '2-digit'
+                        {new Date(slot.start_at).toLocaleTimeString("en-US", {
+                          hour: "numeric",
+                          minute: "2-digit",
                         })}
                       </motion.button>
                     ))}
@@ -304,9 +325,11 @@ export default function Book() {
               >
                 ← Back
               </motion.button>
-              <p className="text-xs text-white/40 tracking-[0.15em] uppercase mb-8">Your information</p>
-              
-              <motion.div 
+              <p className="text-xs text-white/40 tracking-[0.15em] uppercase mb-8">
+                Your information
+              </p>
+
+              <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.3, duration: 0.4 }}
@@ -316,21 +339,27 @@ export default function Book() {
                   type="text"
                   placeholder="Name"
                   value={clientInfo.name}
-                  onChange={(e) => setClientInfo({ ...clientInfo, name: e.target.value })}
+                  onChange={(e) =>
+                    setClientInfo({ ...clientInfo, name: e.target.value })
+                  }
                   className="w-full bg-transparent border-b border-white/[0.08] pb-3 text-sm focus:outline-none focus:border-white/20 transition-colors duration-300"
                 />
                 <input
                   type="tel"
                   placeholder="Phone"
                   value={clientInfo.phone}
-                  onChange={(e) => setClientInfo({ ...clientInfo, phone: e.target.value })}
+                  onChange={(e) =>
+                    setClientInfo({ ...clientInfo, phone: e.target.value })
+                  }
                   className="w-full bg-transparent border-b border-white/[0.08] pb-3 text-sm focus:outline-none focus:border-white/20 transition-colors duration-300"
                 />
                 <input
                   type="email"
                   placeholder="Email"
                   value={clientInfo.email}
-                  onChange={(e) => setClientInfo({ ...clientInfo, email: e.target.value })}
+                  onChange={(e) =>
+                    setClientInfo({ ...clientInfo, email: e.target.value })
+                  }
                   className="w-full bg-transparent border-b border-white/[0.08] pb-3 text-sm focus:outline-none focus:border-white/20 transition-colors duration-300"
                 />
               </motion.div>
@@ -343,7 +372,7 @@ export default function Book() {
                 disabled={booking || !clientInfo.name || !clientInfo.phone}
                 className="w-full border border-white/[0.08] p-4 hover:bg-white/5 transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed text-sm"
               >
-                {booking ? 'Booking...' : 'Confirm booking'}
+                {booking ? "Booking..." : "Confirm booking"}
               </motion.button>
             </motion.div>
           )}
@@ -376,7 +405,6 @@ export default function Book() {
             </motion.div>
           )}
         </AnimatePresence>
-
       </div>
     </div>
   );

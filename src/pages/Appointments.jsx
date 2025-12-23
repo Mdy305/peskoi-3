@@ -7,31 +7,39 @@ export default function Appointments() {
   const [filterStatus, setFilterStatus] = useState("all");
 
   const { data: bookingsData, isLoading } = useQuery({
-    queryKey: ['squareBookings'],
+    queryKey: ["squareBookings"],
     queryFn: async () => {
-      const res = await base44.functions.invoke('squareGetBookings', {});
+      const res = await base44.functions.invoke("squareGetBookings", {});
       return res.data?.bookings || [];
-    }
+    },
   });
 
   const bookings = bookingsData || [];
 
-  const appointments = bookings.map(booking => {
+  const appointments = bookings.map((booking) => {
     const segment = booking.appointment_segments?.[0];
     const startDate = new Date(booking.start_at);
-    
+
     return {
       id: booking.id,
-      client_name: booking.customer_note || 'Guest',
-      service: segment?.service_variation_version?.name || 'Service',
-      date: startDate.toISOString().split('T')[0],
-      time: startDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }),
-      status: booking.status === 'COMPLETED' ? 'completed' : 
-              booking.status === 'CANCELLED' ? 'cancelled' : 'scheduled'
+      client_name: booking.customer_note || "Guest",
+      service: segment?.service_variation_version?.name || "Service",
+      date: startDate.toISOString().split("T")[0],
+      time: startDate.toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      }),
+      status:
+        booking.status === "COMPLETED"
+          ? "completed"
+          : booking.status === "CANCELLED"
+            ? "cancelled"
+            : "scheduled",
     };
   });
 
-  const filteredAppointments = appointments.filter(apt => {
+  const filteredAppointments = appointments.filter((apt) => {
     return filterStatus === "all" || apt.status === filterStatus;
   });
 
@@ -51,14 +59,15 @@ export default function Appointments() {
   return (
     <div className="min-h-screen bg-black text-white">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
-
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
           className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-12"
         >
-          <p className="text-xs text-white/40 tracking-[0.15em] uppercase">Appointments</p>
+          <p className="text-xs text-white/40 tracking-[0.15em] uppercase">
+            Appointments
+          </p>
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
@@ -81,7 +90,7 @@ export default function Appointments() {
               transition={{
                 duration: 0.4,
                 delay: index * 0.05,
-                ease: [0.22, 1, 0.36, 1]
+                ease: [0.22, 1, 0.36, 1],
               }}
               className="border-b border-white/[0.05] pb-4 mb-3 hover:border-white/[0.12] transition-colors duration-300"
             >
@@ -116,7 +125,6 @@ export default function Appointments() {
             </motion.p>
           )}
         </AnimatePresence>
-
       </div>
     </div>
   );

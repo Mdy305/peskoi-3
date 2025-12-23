@@ -9,7 +9,7 @@ export default function DemoInstructions() {
     "AI kommer föreslå lediga tider",
     "Bekräfta tiden du vill ha",
     "Ge ditt namn och telefonnummer",
-    "Du får en bekräftelse när bokningen är klar"
+    "Du får en bekräftelse när bokningen är klar",
   ];
 
   return (
@@ -23,9 +23,14 @@ export default function DemoInstructions() {
       <CardContent>
         <div className="space-y-3">
           {tips.map((tip, index) => (
-            <div key={index} className="flex items-start gap-3 p-3 rounded-lg bg-[#0A0A0A] border border-[#2A2A2A]">
+            <div
+              key={index}
+              className="flex items-start gap-3 p-3 rounded-lg bg-[#0A0A0A] border border-[#2A2A2A]"
+            >
               <div className="w-6 h-6 rounded-full bg-[#84CC16]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                <span className="text-[#84CC16] text-xs font-bold">{index + 1}</span>
+                <span className="text-[#84CC16] text-xs font-bold">
+                  {index + 1}
+                </span>
               </div>
               <p className="text-sm text-gray-300 leading-relaxed">{tip}</p>
             </div>
@@ -38,7 +43,8 @@ export default function DemoInstructions() {
             Demo-läge aktivt
           </h4>
           <p className="text-xs text-gray-400 leading-relaxed">
-            Detta är en simulerad miljö. I produktion kopplas systemet till ditt riktiga telefonnummer via Twilio och Google Calendar.
+            Detta är en simulerad miljö. I produktion kopplas systemet till ditt
+            riktiga telefonnummer via Twilio och Google Calendar.
           </p>
         </div>
       </CardContent>

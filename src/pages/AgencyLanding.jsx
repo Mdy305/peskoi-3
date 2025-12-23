@@ -9,40 +9,42 @@ export default function AgencyLanding() {
     business_name: "",
     owner_email: "",
     owner_name: "",
-    website_url: ""
+    website_url: "",
   });
 
   // Get agency slug from URL
-  const agencySlug = window.location.pathname.split('/agency/')[1];
+  const agencySlug = window.location.pathname.split("/agency/")[1];
 
   const { data: agency, isLoading } = useQuery({
-    queryKey: ['agency', agencySlug],
+    queryKey: ["agency", agencySlug],
     queryFn: async () => {
-      const agencies = await base44.entities.Agency.filter({ agency_slug: agencySlug });
+      const agencies = await base44.entities.Agency.filter({
+        agency_slug: agencySlug,
+      });
       return agencies[0];
     },
-    enabled: !!agencySlug
+    enabled: !!agencySlug,
   });
 
   const onboardMutation = useMutation({
     mutationFn: async (data) => {
-      const response = await base44.functions.invoke('saasClientOnboard', {
+      const response = await base44.functions.invoke("saasClientOnboard", {
         ...data,
         agency_id: agency.id,
-        subscription_tier: 'trial'
+        subscription_tier: "trial",
       });
       return response.data;
     },
     onSuccess: async (data) => {
       // Track new client for agency
-      await base44.functions.invoke('trackAgencyAnalytics', {
+      await base44.functions.invoke("trackAgencyAnalytics", {
         agency_id: agency.id,
-        event_type: 'client_added',
-        client_id: data.client_id
+        event_type: "client_added",
+        client_id: data.client_id,
       });
-      
+
       window.location.href = `/saas-onboarding-success?client_id=${data.client_id}`;
-    }
+    },
   });
 
   const handleSubmit = (e) => {
@@ -73,15 +75,14 @@ export default function AgencyLanding() {
   return (
     <div className="min-h-screen bg-black text-white">
       <div className="max-w-4xl mx-auto px-6 py-20">
-        
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-16"
         >
           {branding.logo_url && (
-            <img 
-              src={branding.logo_url} 
+            <img
+              src={branding.logo_url}
               alt={agency.agency_name}
               className="h-12 mx-auto mb-6"
             />
@@ -90,12 +91,13 @@ export default function AgencyLanding() {
             {agency.agency_name}
           </h1>
           {branding.tagline && (
-            <p className="text-sm text-white/60 tracking-wide">{branding.tagline}</p>
+            <p className="text-sm text-white/60 tracking-wide">
+              {branding.tagline}
+            </p>
           )}
         </motion.div>
 
         <div className="grid md:grid-cols-2 gap-16">
-          
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -108,11 +110,11 @@ export default function AgencyLanding() {
               </p>
               <div className="space-y-4">
                 {[
-                  'AI-powered booking assistant',
-                  '24/7 client communication',
-                  'Square integration',
-                  'Automated confirmations',
-                  'Client retention tools'
+                  "AI-powered booking assistant",
+                  "24/7 client communication",
+                  "Square integration",
+                  "Automated confirmations",
+                  "Client retention tools",
                 ].map((feature, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <Check className="w-4 h-4 text-white mt-0.5 flex-shrink-0" />
@@ -131,14 +133,18 @@ export default function AgencyLanding() {
             <p className="text-xs text-white/40 tracking-[0.15em] uppercase mb-6">
               Get Started
             </p>
-            
+
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-1">
-                <label className="text-xs text-white/40 block">Business Name</label>
+                <label className="text-xs text-white/40 block">
+                  Business Name
+                </label>
                 <input
                   type="text"
                   value={formData.business_name}
-                  onChange={(e) => setFormData({ ...formData, business_name: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, business_name: e.target.value })
+                  }
                   className="w-full bg-transparent border-b border-white/[0.08] pb-2 text-sm focus:outline-none focus:border-white/20 transition-colors"
                   required
                 />
@@ -149,7 +155,9 @@ export default function AgencyLanding() {
                 <input
                   type="text"
                   value={formData.owner_name}
-                  onChange={(e) => setFormData({ ...formData, owner_name: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, owner_name: e.target.value })
+                  }
                   className="w-full bg-transparent border-b border-white/[0.08] pb-2 text-sm focus:outline-none focus:border-white/20 transition-colors"
                   required
                 />
@@ -160,18 +168,24 @@ export default function AgencyLanding() {
                 <input
                   type="email"
                   value={formData.owner_email}
-                  onChange={(e) => setFormData({ ...formData, owner_email: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, owner_email: e.target.value })
+                  }
                   className="w-full bg-transparent border-b border-white/[0.08] pb-2 text-sm focus:outline-none focus:border-white/20 transition-colors"
                   required
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs text-white/40 block">Website (optional)</label>
+                <label className="text-xs text-white/40 block">
+                  Website (optional)
+                </label>
                 <input
                   type="url"
                   value={formData.website_url}
-                  onChange={(e) => setFormData({ ...formData, website_url: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, website_url: e.target.value })
+                  }
                   className="w-full bg-transparent border-b border-white/[0.08] pb-2 text-sm focus:outline-none focus:border-white/20 transition-colors"
                   placeholder="https://..."
                 />
@@ -182,13 +196,13 @@ export default function AgencyLanding() {
                 disabled={onboardMutation.isPending}
                 className="w-full border border-white/[0.08] px-6 py-3 hover:border-white/20 transition-colors text-sm tracking-wide disabled:opacity-50 mt-8"
               >
-                {onboardMutation.isPending ? 'Creating Account...' : 'Start Free Trial'}
+                {onboardMutation.isPending
+                  ? "Creating Account..."
+                  : "Start Free Trial"}
               </button>
             </form>
           </motion.div>
-
         </div>
-
       </div>
     </div>
   );

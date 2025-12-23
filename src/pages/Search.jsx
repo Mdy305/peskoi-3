@@ -2,24 +2,30 @@ import React, { useState, useMemo } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search as SearchIcon, Calendar, User, Phone, Mail } from "lucide-react";
+import {
+  Search as SearchIcon,
+  Calendar,
+  User,
+  Phone,
+  Mail,
+} from "lucide-react";
 
 export default function Search() {
   const [query, setQuery] = useState("");
 
   const { data: appointments = [] } = useQuery({
-    queryKey: ['appointments'],
-    queryFn: () => base44.entities.Appointment.list('-appointment_date')
+    queryKey: ["appointments"],
+    queryFn: () => base44.entities.Appointment.list("-appointment_date"),
   });
 
   const { data: serviceRecords = [] } = useQuery({
-    queryKey: ['serviceRecords'],
-    queryFn: () => base44.entities.ServiceRecord.list('-service_date')
+    queryKey: ["serviceRecords"],
+    queryFn: () => base44.entities.ServiceRecord.list("-service_date"),
   });
 
   const { data: knowledge = [] } = useQuery({
-    queryKey: ['knowledge'],
-    queryFn: () => base44.entities.KnowledgeBase.list()
+    queryKey: ["knowledge"],
+    queryFn: () => base44.entities.KnowledgeBase.list(),
   });
 
   const results = useMemo(() => {
@@ -29,55 +35,55 @@ export default function Search() {
     const matches = [];
 
     // Search appointments
-    appointments.forEach(apt => {
+    appointments.forEach((apt) => {
       if (
         apt.client_name?.toLowerCase().includes(q) ||
         apt.client_phone?.includes(q) ||
-        apt.services?.some(s => s.toLowerCase().includes(q))
+        apt.services?.some((s) => s.toLowerCase().includes(q))
       ) {
         matches.push({
-          type: 'Appointment',
+          type: "Appointment",
           title: apt.client_name,
-          subtitle: `${apt.appointment_date} • ${apt.services?.join(', ')}`,
+          subtitle: `${apt.appointment_date} • ${apt.services?.join(", ")}`,
           phone: apt.client_phone,
           email: apt.client_email,
-          data: apt
+          data: apt,
         });
       }
     });
 
     // Search service records
-    serviceRecords.forEach(record => {
+    serviceRecords.forEach((record) => {
       if (
         record.client_name?.toLowerCase().includes(q) ||
         record.client_phone?.includes(q) ||
-        record.services_provided?.some(s => s.toLowerCase().includes(q)) ||
+        record.services_provided?.some((s) => s.toLowerCase().includes(q)) ||
         record.notes?.toLowerCase().includes(q)
       ) {
         matches.push({
-          type: 'Service Record',
+          type: "Service Record",
           title: record.client_name,
-          subtitle: `${record.service_date} • ${record.services_provided?.join(', ')}`,
+          subtitle: `${record.service_date} • ${record.services_provided?.join(", ")}`,
           phone: record.client_phone,
           notes: record.notes,
-          data: record
+          data: record,
         });
       }
     });
 
     // Search knowledge base
-    knowledge.forEach(item => {
+    knowledge.forEach((item) => {
       if (
         item.title?.toLowerCase().includes(q) ||
         item.content?.toLowerCase().includes(q) ||
-        item.tags?.some(t => t.toLowerCase().includes(q))
+        item.tags?.some((t) => t.toLowerCase().includes(q))
       ) {
         matches.push({
-          type: 'Knowledge',
+          type: "Knowledge",
           title: item.title,
-          subtitle: item.category?.replace('_', ' '),
+          subtitle: item.category?.replace("_", " "),
           content: item.content,
-          data: item
+          data: item,
         });
       }
     });
@@ -88,8 +94,9 @@ export default function Search() {
   return (
     <div className="min-h-screen bg-black text-white">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
-        
-        <p className="text-xs text-white/40 tracking-[0.15em] uppercase mb-8">Search</p>
+        <p className="text-xs text-white/40 tracking-[0.15em] uppercase mb-8">
+          Search
+        </p>
 
         <div className="relative mb-12">
           <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/30" />
@@ -118,7 +125,7 @@ export default function Search() {
               ) : (
                 <div className="space-y-3">
                   <p className="text-xs text-white/30 tracking-wide mb-6">
-                    {results.length} result{results.length !== 1 ? 's' : ''}
+                    {results.length} result{results.length !== 1 ? "s" : ""}
                   </p>
                   {results.map((result, idx) => (
                     <motion.div
@@ -139,7 +146,9 @@ export default function Search() {
                             {result.title}
                           </h3>
                           {result.subtitle && (
-                            <p className="text-sm text-white/40">{result.subtitle}</p>
+                            <p className="text-sm text-white/40">
+                              {result.subtitle}
+                            </p>
                           )}
                         </div>
                       </div>
@@ -189,7 +198,6 @@ export default function Search() {
             </motion.div>
           )}
         </AnimatePresence>
-
       </div>
     </div>
   );

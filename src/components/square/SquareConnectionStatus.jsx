@@ -10,7 +10,7 @@ export default function SquareConnectionStatus() {
     queryFn: () => base44.functions.invoke("squareCheckConnection", {}),
     refetchInterval: 120000,
     retry: false,
-    staleTime: 60000
+    staleTime: 60000,
   });
 
   if (isLoading) {

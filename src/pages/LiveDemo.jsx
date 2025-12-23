@@ -12,7 +12,7 @@ export default function LiveDemo() {
   const [transcript, setTranscript] = useState([]);
   const [error, setError] = useState(null);
   const [audioWarning, setAudioWarning] = useState(null);
-  
+
   const recognitionRef = useRef(null);
   const audioRef = useRef(null);
   const isActiveRef = useRef(false);
@@ -40,7 +40,12 @@ export default function LiveDemo() {
   };
 
   const startListening = () => {
-    if (!recognitionRef.current || !isActiveRef.current || processingRef.current || listeningRef.current) {
+    if (
+      !recognitionRef.current ||
+      !isActiveRef.current ||
+      processingRef.current ||
+      listeningRef.current
+    ) {
       return;
     }
 
@@ -61,7 +66,7 @@ export default function LiveDemo() {
       clearTimeout(silenceTimerRef.current);
       silenceTimerRef.current = null;
     }
-    
+
     if (recognitionRef.current && listeningRef.current) {
       try {
         recognitionRef.current.stop();
@@ -81,9 +86,12 @@ export default function LiveDemo() {
     console.log("Audio length:", audio?.length || 0);
     console.log("================================");
 
-    if (!audio || typeof audio !== 'string' || audio.length < 100) {
+    if (!audio || typeof audio !== "string" || audio.length < 100) {
       console.error("❌ No valid audio data received!");
-      console.error("Audio value:", audio?.substring(0, 50) || "null/undefined");
+      console.error(
+        "Audio value:",
+        audio?.substring(0, 50) || "null/undefined",
+      );
       setAudioWarning("⚠️ Inget ljud mottaget från ElevenLabs");
       setTimeout(() => setAudioWarning(null), 3000);
       return false;
@@ -95,29 +103,29 @@ export default function LiveDemo() {
     }
 
     console.log("✅ Valid audio data, creating blob...");
-    
-    const audioBlob = base64ToBlob(audio, 'audio/mpeg');
+
+    const audioBlob = base64ToBlob(audio, "audio/mpeg");
     if (!audioBlob) {
       console.error("❌ Failed to create audio blob");
       setAudioWarning("⚠️ Kunde inte skapa ljudfil");
       setTimeout(() => setAudioWarning(null), 3000);
       return false;
     }
-    
+
     console.log("✅ Blob created, size:", audioBlob.size, "bytes");
-    
+
     const audioUrl = URL.createObjectURL(audioBlob);
     audioRef.current.src = audioUrl;
-    
+
     console.log("✅ Audio URL set, starting playback...");
-    
+
     return new Promise((resolve) => {
       audioRef.current.onended = () => {
         console.log("✅ ElevenLabs audio finished playing");
         URL.revokeObjectURL(audioUrl);
         resolve(true);
       };
-      
+
       audioRef.current.onerror = (e) => {
         console.error("❌ ElevenLabs playback error:", e);
         console.error("Error details:", audioRef.current.error);
@@ -126,7 +134,7 @@ export default function LiveDemo() {
         setTimeout(() => setAudioWarning(null), 3000);
         resolve(false);
       };
-      
+
       audioRef.current.play().catch((playError) => {
         console.error("❌ ElevenLabs play() error:", playError);
         console.error("Error name:", playError.name);
@@ -153,29 +161,32 @@ export default function LiveDemo() {
       console.log("================================");
       console.log("📤 Calling AI with:", userText.substring(0, 50));
       console.log("================================");
-      
+
       const history = [];
       if (Array.isArray(historySnapshot)) {
         for (const m of historySnapshot.slice(-8)) {
           if (m && m.speaker && m.text) {
             history.push({
               speaker: String(m.speaker),
-              text: String(m.text).substring(0, 300)
+              text: String(m.text).substring(0, 300),
             });
           }
         }
       }
 
-      const response = await base44.functions.invoke('demoConversation', {
+      const response = await base44.functions.invoke("demoConversation", {
         userMessage: String(userText).substring(0, 500),
-        conversationHistory: history
+        conversationHistory: history,
       });
 
       console.log("================================");
       console.log("📨 Response received!");
       console.log("Response exists:", !!response);
       console.log("Response.data exists:", !!response?.data);
-      console.log("Full response.data:", JSON.stringify(response?.data, null, 2));
+      console.log(
+        "Full response.data:",
+        JSON.stringify(response?.data, null, 2),
+      );
       console.log("================================");
 
       if (!response || !response.data) {
@@ -183,7 +194,7 @@ export default function LiveDemo() {
       }
 
       const { text, audio } = response.data;
-      
+
       console.log("================================");
       console.log("💡 Text received:", !!text);
       console.log("Text length:", text?.length || 0);
@@ -194,13 +205,16 @@ export default function LiveDemo() {
       console.log("Audio length:", audio?.length || 0);
       console.log("Audio preview:", audio?.substring(0, 50) || "null");
       console.log("================================");
-      
-      if (!text || typeof text !== 'string') {
+
+      if (!text || typeof text !== "string") {
         throw new Error("Invalid text response");
       }
 
-      setTranscript(prev => [...prev.slice(-19), { speaker: "Evelina", text }]);
-      
+      setTranscript((prev) => [
+        ...prev.slice(-19),
+        { speaker: "Evelina", text },
+      ]);
+
       processingRef.current = false;
       setIsProcessing(false);
 
@@ -216,11 +230,10 @@ export default function LiveDemo() {
         setAudioWarning("⚠️ Backend skickade inget ljud");
         setTimeout(() => setAudioWarning(null), 3000);
       }
-      
+
       if (isActiveRef.current) {
         setTimeout(() => startListening(), 1500);
       }
-
     } catch (err) {
       console.error("================================");
       console.error("❌ AI Response Error:");
@@ -228,14 +241,15 @@ export default function LiveDemo() {
       console.error("Error message:", err.message);
       console.error("Response data:", err.response?.data);
       console.error("================================");
-      
+
       processingRef.current = false;
       setIsProcessing(false);
       setIsSpeaking(false);
-      
-      const errorText = err.response?.data?.error || err.message || "Unknown error";
+
+      const errorText =
+        err.response?.data?.error || err.message || "Unknown error";
       setError(`Error: ${errorText}`);
-      
+
       setTimeout(() => {
         setError(null);
         if (isActiveRef.current) {
@@ -247,30 +261,35 @@ export default function LiveDemo() {
 
   useEffect(() => {
     console.log("🎤 Setting up speech recognition");
-    
-    if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
-      setError("Your browser doesn't support speech recognition. Please use Chrome, Edge, or Safari.");
+
+    if (
+      !("webkitSpeechRecognition" in window || "SpeechRecognition" in window)
+    ) {
+      setError(
+        "Your browser doesn't support speech recognition. Please use Chrome, Edge, or Safari.",
+      );
       return;
     }
 
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
     const recognition = new SpeechRecognition();
-    
+
     recognition.continuous = false;
     recognition.interimResults = true;
-    recognition.lang = 'sv-SE';
+    recognition.lang = "sv-SE";
     recognition.maxAlternatives = 3; // ✅ Fler alternativ = bättre noggrannhet!
 
     recognitionRef.current = recognition;
 
     recognition.onresult = (event) => {
-      let interimText = '';
-      let finalText = '';
-      
+      let interimText = "";
+      let finalText = "";
+
       // ✅ Samla både interim och final resultat
       for (let i = event.resultIndex; i < event.results.length; i++) {
         const transcript = event.results[i][0].transcript;
-        
+
         if (event.results[i].isFinal) {
           finalText += transcript;
         } else {
@@ -300,16 +319,19 @@ export default function LiveDemo() {
 
       if (finalText && finalText.length > 0) {
         console.log("🎤 User said (FINAL):", finalText);
-        
+
         if (silenceTimerRef.current) {
           clearTimeout(silenceTimerRef.current);
         }
-        
+
         listeningRef.current = false;
         setIsListening(false);
-        
-        setTranscript(prev => {
-          const updated = [...prev.slice(-19), { speaker: "Du", text: finalText }];
+
+        setTranscript((prev) => {
+          const updated = [
+            ...prev.slice(-19),
+            { speaker: "Du", text: finalText },
+          ];
           setTimeout(() => handleAIResponse(finalText, updated), 100);
           return updated;
         });
@@ -320,18 +342,20 @@ export default function LiveDemo() {
       console.error("Speech error:", event.error);
       listeningRef.current = false;
       setIsListening(false);
-      
+
       if (silenceTimerRef.current) {
         clearTimeout(silenceTimerRef.current);
       }
-      
-      if (event.error === 'no-speech') {
+
+      if (event.error === "no-speech") {
         if (isActiveRef.current && !processingRef.current) {
           setTimeout(() => startListening(), 1000);
         }
-      } else if (event.error === 'not-allowed') {
-        setError("Microphone access denied. Please allow microphone access in your browser settings.");
-      } else if (event.error !== 'aborted') {
+      } else if (event.error === "not-allowed") {
+        setError(
+          "Microphone access denied. Please allow microphone access in your browser settings.",
+        );
+      } else if (event.error !== "aborted") {
         if (isActiveRef.current && !processingRef.current) {
           setTimeout(() => startListening(), 1500);
         }
@@ -364,11 +388,11 @@ export default function LiveDemo() {
       setAudioWarning(null);
       processingRef.current = true;
       setIsProcessing(true);
-      
+
       try {
-        const response = await base44.functions.invoke('demoConversation', {
+        const response = await base44.functions.invoke("demoConversation", {
           userMessage: "Hej!",
-          conversationHistory: []
+          conversationHistory: [],
         });
 
         if (!response?.data?.text) {
@@ -377,8 +401,13 @@ export default function LiveDemo() {
 
         const { text, audio } = response.data;
         console.log("✅ First greeting text:", text);
-        console.log("✅ First greeting audio:", !!audio, "length:", audio?.length);
-        
+        console.log(
+          "✅ First greeting audio:",
+          !!audio,
+          "length:",
+          audio?.length,
+        );
+
         setTranscript([{ speaker: "Evelina", text }]);
         processingRef.current = false;
         setIsProcessing(false);
@@ -388,12 +417,13 @@ export default function LiveDemo() {
           await playAudio(audio);
           setIsSpeaking(false);
         }
-        
+
         setTimeout(() => startListening(), 1500);
-        
       } catch (err) {
         console.error("❌ Start error:", err);
-        setError("Could not start demo. Please check your microphone permissions.");
+        setError(
+          "Could not start demo. Please check your microphone permissions.",
+        );
         setIsActive(false);
         processingRef.current = false;
         setIsProcessing(false);
@@ -405,12 +435,12 @@ export default function LiveDemo() {
       setIsSpeaking(false);
       setIsProcessing(false);
       processingRef.current = false;
-      
+
       if (audioRef.current) {
         audioRef.current.pause();
         audioRef.current.currentTime = 0;
       }
-      
+
       setTranscript([]);
       setAudioWarning(null);
     }
@@ -419,7 +449,7 @@ export default function LiveDemo() {
   return (
     <div className="min-h-screen bg-black p-4 sm:p-6 lg:p-8">
       <div className="max-w-4xl mx-auto">
-        <audio ref={audioRef} style={{ display: 'none' }} />
+        <audio ref={audioRef} style={{ display: "none" }} />
 
         <div className="text-center mb-8 sm:mb-12">
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-3">
@@ -441,7 +471,7 @@ export default function LiveDemo() {
               <p className="text-sm text-red-400">{error}</p>
             </motion.div>
           )}
-          
+
           {audioWarning && (
             <motion.div
               initial={{ opacity: 0, y: -20 }}
@@ -464,11 +494,12 @@ export default function LiveDemo() {
             className={`
               relative w-32 h-32 sm:w-40 sm:h-40 rounded-full flex items-center justify-center
               transition-all duration-300 transform hover:scale-105 active:scale-95
-              ${isActive 
-                ? 'bg-[#84CC16] shadow-2xl shadow-[#84CC16]/50' 
-                : 'bg-[#1a1a1a] hover:bg-[#2a2a2a] border border-[#2a2a2a]'
+              ${
+                isActive
+                  ? "bg-[#84CC16] shadow-2xl shadow-[#84CC16]/50"
+                  : "bg-[#1a1a1a] hover:bg-[#2a2a2a] border border-[#2a2a2a]"
               }
-              ${(isSpeaking || isProcessing) ? 'opacity-75 cursor-not-allowed' : ''}
+              ${isSpeaking || isProcessing ? "opacity-75 cursor-not-allowed" : ""}
             `}
           >
             {isProcessing ? (
@@ -480,31 +511,43 @@ export default function LiveDemo() {
             ) : (
               <Mic className="w-10 h-10 sm:w-12 sm:h-12 text-gray-400" />
             )}
-            
+
             {isListening && (
               <div className="absolute inset-0 rounded-full bg-[#84CC16] animate-ping opacity-20"></div>
             )}
           </button>
-          
+
           <div className="mt-6 text-center">
-            <span className={`text-sm font-medium block ${
-              isProcessing ? 'text-yellow-400' :
-              isListening ? 'text-[#84CC16]' : 
-              isSpeaking ? 'text-blue-400' : 
-              isActive ? 'text-gray-400' : 
-              'text-gray-500'
-            }`}>
-              {isProcessing ? '🤔 Evelina is thinking...' :
-               isSpeaking ? '🎙️ Evelina is speaking...' :
-               isListening ? '🎤 Listening...' :
-               isActive ? '⏸️ Ready' :
-               'Inactive'}
+            <span
+              className={`text-sm font-medium block ${
+                isProcessing
+                  ? "text-yellow-400"
+                  : isListening
+                    ? "text-[#84CC16]"
+                    : isSpeaking
+                      ? "text-blue-400"
+                      : isActive
+                        ? "text-gray-400"
+                        : "text-gray-500"
+              }`}
+            >
+              {isProcessing
+                ? "🤔 Evelina is thinking..."
+                : isSpeaking
+                  ? "🎙️ Evelina is speaking..."
+                  : isListening
+                    ? "🎤 Listening..."
+                    : isActive
+                      ? "⏸️ Ready"
+                      : "Inactive"}
             </span>
             {isActive && (
               <p className="text-xs text-gray-600 mt-2">
-                {isProcessing ? 'Waiting for response...' : 
-                 isListening ? 'Speak now! (2.5 sec pause)' :
-                 'System is listening'}
+                {isProcessing
+                  ? "Waiting for response..."
+                  : isListening
+                    ? "Speak now! (2.5 sec pause)"
+                    : "System is listening"}
               </p>
             )}
           </div>
@@ -515,7 +558,7 @@ export default function LiveDemo() {
             <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">
               Conversation
             </h2>
-            
+
             <div className="min-h-[250px] sm:min-h-[300px] max-h-[400px] bg-black rounded-lg border border-[#1f1f1f] p-4 sm:p-6 overflow-y-auto">
               {transcript.length === 0 ? (
                 <div className="flex items-center justify-center h-[250px] sm:h-[300px]">
@@ -532,13 +575,16 @@ export default function LiveDemo() {
                       animate={{ opacity: 1, y: 0 }}
                       className="flex gap-3"
                     >
-                      <div className={`
+                      <div
+                        className={`
                         px-4 py-3 rounded-lg max-w-full sm:max-w-2xl
-                        ${msg.speaker === 'Evelina' 
-                          ? 'bg-[#1a1a1a] text-white border border-[#2a2a2a]' 
-                          : 'bg-[#84CC16] text-black'
+                        ${
+                          msg.speaker === "Evelina"
+                            ? "bg-[#1a1a1a] text-white border border-[#2a2a2a]"
+                            : "bg-[#84CC16] text-black"
                         }
-                      `}>
+                      `}
+                      >
                         <p className="text-xs font-semibold mb-1 opacity-60">
                           {msg.speaker}
                         </p>
@@ -546,7 +592,7 @@ export default function LiveDemo() {
                       </div>
                     </motion.div>
                   ))}
-                  
+
                   {isProcessing && (
                     <motion.div
                       initial={{ opacity: 0, y: 10 }}
@@ -554,7 +600,9 @@ export default function LiveDemo() {
                       className="flex gap-3"
                     >
                       <div className="bg-[#1a1a1a] text-white border border-[#2a2a2a] px-4 py-3 rounded-lg">
-                        <p className="text-xs font-semibold mb-1 opacity-60">Evelina</p>
+                        <p className="text-xs font-semibold mb-1 opacity-60">
+                          Evelina
+                        </p>
                         <div className="flex items-center gap-2">
                           <Loader2 className="w-4 h-4 animate-spin text-[#84CC16]" />
                           <p className="text-sm text-gray-400">Thinking...</p>
@@ -578,7 +626,9 @@ export default function LiveDemo() {
                 <li>• 3x better speech recognition (maxAlternatives: 3)</li>
                 <li>• 2.5 second pause before Evelina speaks (more time!)</li>
                 <li>• Better handling of long phone numbers</li>
-                <li>• Try saying slowly: "zero seven nine eight eight zero four"</li>
+                <li>
+                  • Try saying slowly: "zero seven nine eight eight zero four"
+                </li>
               </ul>
             </CardContent>
           </Card>

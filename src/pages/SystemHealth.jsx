@@ -5,10 +5,14 @@ import { motion } from "framer-motion";
 import { CheckCircle2, AlertCircle, XCircle, RefreshCw } from "lucide-react";
 
 export default function SystemHealth() {
-  const { data: health, isLoading, refetch } = useQuery({
-    queryKey: ['systemHealth'],
-    queryFn: () => base44.functions.invoke('systemHealthCheck', {}),
-    refetchInterval: 30000 // Auto-refresh every 30s
+  const {
+    data: health,
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ["systemHealth"],
+    queryFn: () => base44.functions.invoke("systemHealthCheck", {}),
+    refetchInterval: 30000, // Auto-refresh every 30s
   });
 
   if (isLoading) {
@@ -20,29 +24,28 @@ export default function SystemHealth() {
   }
 
   const healthData = health?.data;
-  
+
   const getStatusIcon = (status) => {
-    if (status === 'active' || status === 'configured') {
+    if (status === "active" || status === "configured") {
       return <CheckCircle2 className="w-4 h-4 text-white" />;
     }
-    if (status === 'expired' || status === 'missing') {
+    if (status === "expired" || status === "missing") {
       return <AlertCircle className="w-4 h-4 text-white/60" />;
     }
     return <XCircle className="w-4 h-4 text-white/40" />;
   };
 
   const getStatusText = (status) => {
-    if (status === 'active' || status === 'configured') return 'Operational';
-    if (status === 'expired') return 'Token Expired';
-    if (status === 'missing') return 'Not Configured';
-    if (status === 'disconnected') return 'Disconnected';
-    return 'Error';
+    if (status === "active" || status === "configured") return "Operational";
+    if (status === "expired") return "Token Expired";
+    if (status === "missing") return "Not Configured";
+    if (status === "disconnected") return "Disconnected";
+    return "Error";
   };
 
   return (
     <div className="min-h-screen bg-black text-white">
       <div className="max-w-2xl mx-auto px-6 py-20">
-        
         <div className="flex items-center justify-between mb-12">
           <p className="text-xs text-white/40 tracking-[0.15em] uppercase">
             System Health
@@ -57,7 +60,6 @@ export default function SystemHealth() {
         </div>
 
         <div className="space-y-8">
-          
           {/* Square Connection */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
@@ -73,20 +75,32 @@ export default function SystemHealth() {
                 {getStatusText(healthData?.square_connection?.status)}
               </span>
             </div>
-            
+
             {healthData?.square_connection?.details && (
               <div className="ml-7 space-y-1 text-xs text-white/40">
                 {healthData.square_connection.details.business_name && (
-                  <p>Business: {healthData.square_connection.details.business_name}</p>
+                  <p>
+                    Business:{" "}
+                    {healthData.square_connection.details.business_name}
+                  </p>
                 )}
                 {healthData.square_connection.details.merchant_id && (
-                  <p>Merchant: {healthData.square_connection.details.merchant_id.substring(0, 16)}...</p>
+                  <p>
+                    Merchant:{" "}
+                    {healthData.square_connection.details.merchant_id.substring(
+                      0,
+                      16,
+                    )}
+                    ...
+                  </p>
                 )}
                 {healthData.square_connection.details.is_sandbox && (
                   <p className="text-white/60">Mode: Sandbox</p>
                 )}
                 {healthData.square_connection.details.message && (
-                  <p className="text-white/60">{healthData.square_connection.details.message}</p>
+                  <p className="text-white/60">
+                    {healthData.square_connection.details.message}
+                  </p>
                 )}
               </div>
             )}
@@ -108,7 +122,7 @@ export default function SystemHealth() {
                 {getStatusText(healthData?.webhook_signature?.status)}
               </span>
             </div>
-            
+
             {!healthData?.webhook_signature?.configured && (
               <div className="ml-7 text-xs text-white/40">
                 <p>Webhook signature key not configured in environment</p>
@@ -132,28 +146,29 @@ export default function SystemHealth() {
                 ) : (
                   <XCircle className="w-4 h-4 text-white/40" />
                 )}
-                <span className="text-sm tracking-wide">Booking Success Rate</span>
+                <span className="text-sm tracking-wide">
+                  Booking Success Rate
+                </span>
               </div>
               <span className="text-lg tracking-wide">
                 {healthData?.booking_success_rate?.rate}%
               </span>
             </div>
-            
+
             <div className="ml-7 space-y-1 text-xs text-white/40">
               <p>Total: {healthData?.booking_success_rate?.total}</p>
               <p>Successful: {healthData?.booking_success_rate?.successful}</p>
               <p>Failed: {healthData?.booking_success_rate?.failed}</p>
             </div>
           </motion.div>
-
         </div>
 
         {healthData?.last_checked && (
           <div className="mt-12 text-xs text-white/30 text-center">
-            Last checked: {new Date(healthData.last_checked).toLocaleTimeString()}
+            Last checked:{" "}
+            {new Date(healthData.last_checked).toLocaleTimeString()}
           </div>
         )}
-
       </div>
     </div>
   );

@@ -13,7 +13,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { BookOpen, Plus, Loader2, X } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -95,7 +101,9 @@ export default function KnowledgeBase() {
         {/* Header */}
         <div className="flex items-center justify-between mb-12">
           <div>
-            <h1 className="text-5xl font-bold mb-2 tracking-tight">Knowledge Base</h1>
+            <h1 className="text-5xl font-bold mb-2 tracking-tight">
+              Knowledge Base
+            </h1>
             <p className="text-gray-400 text-lg">
               Store techniques, product info, and salon resources
             </p>
@@ -109,7 +117,9 @@ export default function KnowledgeBase() {
             </DialogTrigger>
             <DialogContent className="bg-[#141414] border-[#1f1f1f] text-white max-w-2xl max-h-[90vh] overflow-y-auto">
               <DialogHeader>
-                <DialogTitle className="text-2xl font-bold">Add to Knowledge Base</DialogTitle>
+                <DialogTitle className="text-2xl font-bold">
+                  Add to Knowledge Base
+                </DialogTitle>
               </DialogHeader>
               <form onSubmit={handleSubmit} className="space-y-6 mt-4">
                 <div>
@@ -118,7 +128,9 @@ export default function KnowledgeBase() {
                   </label>
                   <Input
                     value={formData.title}
-                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, title: e.target.value })
+                    }
                     required
                     className="bg-[#1f1f1f] border-[#2a2a2a] text-white"
                     placeholder="e.g., How to Fix Brassy Blonde Hair"
@@ -131,7 +143,9 @@ export default function KnowledgeBase() {
                   </label>
                   <Select
                     value={formData.category}
-                    onValueChange={(value) => setFormData({ ...formData, category: value })}
+                    onValueChange={(value) =>
+                      setFormData({ ...formData, category: value })
+                    }
                   >
                     <SelectTrigger className="bg-[#1f1f1f] border-[#2a2a2a] text-white">
                       <SelectValue />
@@ -142,7 +156,9 @@ export default function KnowledgeBase() {
                       <SelectItem value="policy">Policy</SelectItem>
                       <SelectItem value="training">Training</SelectItem>
                       <SelectItem value="client_care">Client Care</SelectItem>
-                      <SelectItem value="troubleshooting">Troubleshooting</SelectItem>
+                      <SelectItem value="troubleshooting">
+                        Troubleshooting
+                      </SelectItem>
                       <SelectItem value="other">Other</SelectItem>
                     </SelectContent>
                   </Select>
@@ -154,7 +170,9 @@ export default function KnowledgeBase() {
                   </label>
                   <Textarea
                     value={formData.content}
-                    onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, content: e.target.value })
+                    }
                     required
                     rows={6}
                     className="bg-[#1f1f1f] border-[#2a2a2a] text-white"
@@ -168,7 +186,12 @@ export default function KnowledgeBase() {
                   </label>
                   <Input
                     value={formData.product_brand}
-                    onChange={(e) => setFormData({ ...formData, product_brand: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        product_brand: e.target.value,
+                      })
+                    }
                     className="bg-[#1f1f1f] border-[#2a2a2a] text-white"
                     placeholder="e.g., Olaplex, Redken, Wella"
                   />
@@ -180,7 +203,9 @@ export default function KnowledgeBase() {
                   </label>
                   <Textarea
                     value={formData.instructions}
-                    onChange={(e) => setFormData({ ...formData, instructions: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, instructions: e.target.value })
+                    }
                     rows={4}
                     className="bg-[#1f1f1f] border-[#2a2a2a] text-white"
                     placeholder="Step-by-step instructions if needed..."
@@ -188,12 +213,16 @@ export default function KnowledgeBase() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2 text-gray-300">Tags</label>
+                  <label className="block text-sm font-medium mb-2 text-gray-300">
+                    Tags
+                  </label>
                   <div className="flex gap-2 mb-2">
                     <Input
                       value={tagInput}
                       onChange={(e) => setTagInput(e.target.value)}
-                      onKeyPress={(e) => e.key === "Enter" && (e.preventDefault(), addTag())}
+                      onKeyPress={(e) =>
+                        e.key === "Enter" && (e.preventDefault(), addTag())
+                      }
                       className="bg-[#1f1f1f] border-[#2a2a2a] text-white"
                       placeholder="e.g., balayage, color-correction, curly-hair"
                     />
@@ -238,7 +267,9 @@ export default function KnowledgeBase() {
                     disabled={createMutation.isPending}
                     className="flex-1 bg-[#84CC16] hover:bg-[#84CC16]/90 text-black font-semibold"
                   >
-                    {createMutation.isPending ? "Creating..." : "Add to Knowledge Base"}
+                    {createMutation.isPending
+                      ? "Creating..."
+                      : "Add to Knowledge Base"}
                   </Button>
                 </div>
               </form>
@@ -256,8 +287,12 @@ export default function KnowledgeBase() {
           <Card className="bg-[#141414] border-[#1f1f1f]">
             <CardContent className="text-center py-12">
               <BookOpen className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-400 mb-2">No knowledge entries yet</h3>
-              <p className="text-gray-500 mb-4">Start building your salon knowledge base</p>
+              <h3 className="text-xl font-semibold text-gray-400 mb-2">
+                No knowledge entries yet
+              </h3>
+              <p className="text-gray-500 mb-4">
+                Start building your salon knowledge base
+              </p>
             </CardContent>
           </Card>
         ) : (
@@ -276,13 +311,20 @@ export default function KnowledgeBase() {
                         <BookOpen className="w-5 h-5 text-[#84CC16]" />
                       </div>
                       <div className="flex-1">
-                        <CardTitle className="text-white text-lg mb-2">{item.title}</CardTitle>
+                        <CardTitle className="text-white text-lg mb-2">
+                          {item.title}
+                        </CardTitle>
                         <div className="flex flex-wrap gap-2">
-                          <Badge className={`${categoryColors[item.category]} border-0 text-xs`}>
+                          <Badge
+                            className={`${categoryColors[item.category]} border-0 text-xs`}
+                          >
                             {item.category.replace("_", " ")}
                           </Badge>
                           {item.product_brand && (
-                            <Badge variant="outline" className="border-gray-600 text-gray-400 text-xs">
+                            <Badge
+                              variant="outline"
+                              className="border-gray-600 text-gray-400 text-xs"
+                            >
                               {item.product_brand}
                             </Badge>
                           )}

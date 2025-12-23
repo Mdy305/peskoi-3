@@ -4,7 +4,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { Save, Calendar, Phone, HelpCircle, CheckCircle, AlertCircle, DollarSign, ExternalLink } from "lucide-react";
+import {
+  Save,
+  Calendar,
+  Phone,
+  HelpCircle,
+  CheckCircle,
+  AlertCircle,
+  DollarSign,
+  ExternalLink,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import IntegrationsGuide from "./IntegrationsGuide";
@@ -54,7 +63,9 @@ export default function IntegrationsSettings({ business, onSave }) {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-2">
                     <Phone className="w-4 h-4 text-[#84CC16] flex-shrink-0" />
-                    <h3 className="text-sm font-semibold text-white">Twilio (Voice & SMS)</h3>
+                    <h3 className="text-sm font-semibold text-white">
+                      Twilio (Voice & SMS)
+                    </h3>
                     {isTwilioConnected ? (
                       <Badge className="bg-[#84CC16]/20 text-[#84CC16] text-xs ml-auto">
                         <CheckCircle className="w-3 h-3 mr-1" />
@@ -68,25 +79,33 @@ export default function IntegrationsSettings({ business, onSave }) {
                     )}
                   </div>
                   <p className="text-xs text-gray-400 mb-3">
-                    Phone service for receiving real calls. Customers call your Twilio number and AI answers automatically.
+                    Phone service for receiving real calls. Customers call your
+                    Twilio number and AI answers automatically.
                   </p>
                 </div>
                 <Button
                   type="button"
                   variant="ghost"
                   size="sm"
-                  onClick={() => setShowGuide('twilio')}
+                  onClick={() => setShowGuide("twilio")}
                   className="text-[#84CC16] hover:bg-[#84CC16]/10 h-8 w-8 p-0 flex-shrink-0"
                 >
                   <HelpCircle className="w-4 h-4" />
                 </Button>
               </div>
-              
+
               <div>
-                <Label className="text-xs text-gray-400">Twilio Phone Number</Label>
+                <Label className="text-xs text-gray-400">
+                  Twilio Phone Number
+                </Label>
                 <Input
                   value={formData.twilio_phone_number}
-                  onChange={(e) => setFormData({ ...formData, twilio_phone_number: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      twilio_phone_number: e.target.value,
+                    })
+                  }
                   className="bg-[#0a0a0a] border-[#1f1f1f] text-white mt-1.5 text-sm h-10"
                   placeholder="+1 234 567 8900"
                 />
@@ -102,11 +121,25 @@ export default function IntegrationsSettings({ business, onSave }) {
                   Quick Guide: Getting started with Twilio
                 </h4>
                 <ol className="text-xs text-gray-400 space-y-1 list-decimal list-inside">
-                  <li>Go to <a href="https://twilio.com" target="_blank" className="text-[#84CC16] underline">twilio.com</a> and create account</li>
+                  <li>
+                    Go to{" "}
+                    <a
+                      href="https://twilio.com"
+                      target="_blank"
+                      className="text-[#84CC16] underline"
+                      rel="noreferrer"
+                    >
+                      twilio.com
+                    </a>{" "}
+                    and create account
+                  </li>
                   <li>Verify your account and add credit</li>
                   <li>Buy a phone number under "Phone Numbers"</li>
                   <li>Configure webhook URLs in Twilio console</li>
-                  <li>Add API credentials in Dashboard → Settings → Environment Variables</li>
+                  <li>
+                    Add API credentials in Dashboard → Settings → Environment
+                    Variables
+                  </li>
                   <li>Paste your Twilio number here</li>
                   <li>Click "Save Changes" below</li>
                   <li>🎉 Call your number and test Evelina!</li>
@@ -122,7 +155,9 @@ export default function IntegrationsSettings({ business, onSave }) {
                     <p>• Phone number: ~$3/month</p>
                     <p>• Per call (avg 3 min): ~$1/call</p>
                     <p>• SMS: ~$0.05/message</p>
-                    <p className="text-gray-500 pt-1">Billed separately by Twilio</p>
+                    <p className="text-gray-500 pt-1">
+                      Billed separately by Twilio
+                    </p>
                   </div>
                 </div>
               </div>
@@ -134,7 +169,9 @@ export default function IntegrationsSettings({ business, onSave }) {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-2">
                     <Calendar className="w-4 h-4 text-[#84CC16] flex-shrink-0" />
-                    <h3 className="text-sm font-semibold text-white">Google Calendar</h3>
+                    <h3 className="text-sm font-semibold text-white">
+                      Google Calendar
+                    </h3>
                     {isGoogleConnected ? (
                       <Badge className="bg-[#84CC16]/20 text-[#84CC16] text-xs ml-auto">
                         <CheckCircle className="w-3 h-3 mr-1" />
@@ -148,25 +185,33 @@ export default function IntegrationsSettings({ business, onSave }) {
                     )}
                   </div>
                   <p className="text-xs text-gray-400 mb-3">
-                    Sync bookings with your calendar. AI automatically checks available times.
+                    Sync bookings with your calendar. AI automatically checks
+                    available times.
                   </p>
                 </div>
                 <Button
                   type="button"
                   variant="ghost"
                   size="sm"
-                  onClick={() => setShowGuide('google')}
+                  onClick={() => setShowGuide("google")}
                   className="text-[#84CC16] hover:bg-[#84CC16]/10 h-8 w-8 p-0 flex-shrink-0"
                 >
                   <HelpCircle className="w-4 h-4" />
                 </Button>
               </div>
-              
+
               <div>
-                <Label className="text-xs text-gray-400">Google Calendar ID</Label>
+                <Label className="text-xs text-gray-400">
+                  Google Calendar ID
+                </Label>
                 <Input
                   value={formData.google_calendar_id}
-                  onChange={(e) => setFormData({ ...formData, google_calendar_id: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      google_calendar_id: e.target.value,
+                    })
+                  }
                   className="bg-[#0a0a0a] border-[#1f1f1f] text-white mt-1.5 text-sm h-10"
                   placeholder="example@group.calendar.google.com"
                 />
@@ -180,7 +225,9 @@ export default function IntegrationsSettings({ business, onSave }) {
                 <div className="flex gap-2">
                   <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0 mt-0.5" />
                   <div className="text-xs text-gray-400">
-                    <p className="font-semibold text-green-400 mb-0.5">Google Calendar is free!</p>
+                    <p className="font-semibold text-green-400 mb-0.5">
+                      Google Calendar is free!
+                    </p>
                     <p>No additional cost for synchronization</p>
                   </div>
                 </div>
@@ -193,14 +240,16 @@ export default function IntegrationsSettings({ business, onSave }) {
                 <div className="flex items-start gap-2.5">
                   <DollarSign className="w-4 h-4 text-[#84CC16] flex-shrink-0 mt-0.5" />
                   <div className="flex-1 min-w-0">
-                    <h4 className="text-xs font-semibold text-white mb-1">Wondering about total costs?</h4>
+                    <h4 className="text-xs font-semibold text-white mb-1">
+                      Wondering about total costs?
+                    </h4>
                     <p className="text-xs text-gray-400 mb-2">
                       See complete cost breakdown and our plans
                     </p>
                     <Link to={createPageUrl("Pricing")}>
-                      <Button 
+                      <Button
                         type="button"
-                        variant="outline" 
+                        variant="outline"
                         size="sm"
                         className="border-[#84CC16]/30 text-[#84CC16] hover:bg-[#84CC16]/10 w-full text-xs h-8"
                       >
@@ -214,7 +263,10 @@ export default function IntegrationsSettings({ business, onSave }) {
             </Card>
 
             <div className="flex justify-end pt-2">
-              <Button type="submit" className="bg-[#84CC16] hover:bg-[#84CC16]/90 text-black w-full sm:w-auto text-sm h-10">
+              <Button
+                type="submit"
+                className="bg-[#84CC16] hover:bg-[#84CC16]/90 text-black w-full sm:w-auto text-sm h-10"
+              >
                 <Save className="w-4 h-4 mr-2" />
                 Save Changes
               </Button>

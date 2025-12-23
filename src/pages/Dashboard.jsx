@@ -13,7 +13,7 @@ export default function Dashboard() {
     refetchOnWindowFocus: false,
     refetchOnMount: false,
     retry: false,
-    staleTime: Infinity
+    staleTime: Infinity,
   });
 
   const step = session?.data?.step;
@@ -26,24 +26,25 @@ export default function Dashboard() {
     refetchOnWindowFocus: false,
     refetchOnMount: false,
     retry: false,
-    staleTime: Infinity
+    staleTime: Infinity,
   });
 
   // Fetch reputation events (only if READY)
-  const { data: reputationEvents = [], isLoading: reputationLoading } = useQuery({
-    queryKey: ["reputationEvents"],
-    queryFn: () => base44.entities.ReputationEvent.list("-created_date"),
-    enabled: step === "READY",
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
-    retry: false,
-    staleTime: Infinity
-  });
+  const { data: reputationEvents = [], isLoading: reputationLoading } =
+    useQuery({
+      queryKey: ["reputationEvents"],
+      queryFn: () => base44.entities.ReputationEvent.list("-created_date"),
+      enabled: step === "READY",
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      retry: false,
+      staleTime: Infinity,
+    });
 
   // Redirect if not ready
   useEffect(() => {
     if (!isLoading && step === "CONNECT_SQUARE") {
-      window.location.href = createPageUrl('ConnectSquare');
+      window.location.href = createPageUrl("ConnectSquare");
     }
   }, [step, isLoading]);
 
@@ -54,30 +55,30 @@ export default function Dashboard() {
     }
 
     // Combine appointments and reputation events
-    const appointmentEvents = appointments.map(apt => ({
+    const appointmentEvents = appointments.map((apt) => ({
       id: apt.id,
-      type: 'appointment',
+      type: "appointment",
       text: getEventText(apt),
       timestamp: new Date(apt.created_date),
-      isGuest: apt.client_name === 'GUEST_INTERACTION',
-      data: apt
+      isGuest: apt.client_name === "GUEST_INTERACTION",
+      data: apt,
     }));
 
-    const reputationEventsList = reputationEvents.map(event => ({
+    const reputationEventsList = reputationEvents.map((event) => ({
       id: event.id,
-      type: 'reputation',
+      type: "reputation",
       text: getReputationText(event),
       timestamp: new Date(event.created_date),
       isGuest: false,
       requiresAttention: event.requires_attention,
-      data: event
+      data: event,
     }));
 
     const allEvents = [...appointmentEvents, ...reputationEventsList]
       .sort((a, b) => b.timestamp - a.timestamp)
       .slice(0, 20);
 
-    setRealEvents(prev => {
+    setRealEvents((prev) => {
       if (JSON.stringify(prev) === JSON.stringify(allEvents)) {
         return prev;
       }
@@ -87,30 +88,30 @@ export default function Dashboard() {
 
   const getEventText = (apt) => {
     // Guest interactions
-    if (apt.client_name === 'GUEST_INTERACTION') {
-      return apt.notes || 'Guest reached out';
+    if (apt.client_name === "GUEST_INTERACTION") {
+      return apt.notes || "Guest reached out";
     }
 
     // System sync events
-    if (apt.client_name === 'SYSTEM') {
-      return apt.notes || 'System event';
+    if (apt.client_name === "SYSTEM") {
+      return apt.notes || "System event";
     }
 
     // Regular appointments
-    if (apt.status === 'cancelled') {
-      return 'Appointment cancelled';
+    if (apt.status === "cancelled") {
+      return "Appointment cancelled";
     }
-    if (apt.status === 'completed') {
-      return 'Service completed';
+    if (apt.status === "completed") {
+      return "Service completed";
     }
-    return 'Appointment secured';
+    return "Appointment secured";
   };
 
   const getReputationText = (event) => {
-    if (event.sentiment === 'negative') {
+    if (event.sentiment === "negative") {
       return `Negative review detected — ${event.rating}★`;
     }
-    if (event.sentiment === 'positive' && event.rating >= 4) {
+    if (event.sentiment === "positive" && event.rating >= 4) {
       return `Positive review received — ${event.rating}★`;
     }
     return `Review received — ${event.rating}★`;
@@ -134,32 +135,31 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-black text-white">
       <div className="max-w-2xl mx-auto px-6 py-20">
-
         {/* Real Events Only */}
         <div className="space-y-12">
-          {realEvents.length === 0 ? null : (
-            realEvents.map((event) => (
-              <div
-                key={event.id}
-                className="border-b border-white/[0.05] pb-8"
-              >
-                <p className={`text-sm tracking-wide ${
-                  event.requiresAttention ? 'text-white' : 'text-white/80'
-                }`}>
-                  {event.text}
-                </p>
-                {event.requiresAttention && (
-                  <p className="text-xs text-white/40 mt-2">
-                    Requires attention
+          {realEvents.length === 0
+            ? null
+            : realEvents.map((event) => (
+                <div
+                  key={event.id}
+                  className="border-b border-white/[0.05] pb-8"
+                >
+                  <p
+                    className={`text-sm tracking-wide ${
+                      event.requiresAttention ? "text-white" : "text-white/80"
+                    }`}
+                  >
+                    {event.text}
                   </p>
-                )}
-              </div>
-            ))
-          )}
+                  {event.requiresAttention && (
+                    <p className="text-xs text-white/40 mt-2">
+                      Requires attention
+                    </p>
+                  )}
+                </div>
+              ))}
         </div>
       </div>
-
-
     </div>
   );
 }

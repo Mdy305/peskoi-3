@@ -4,12 +4,34 @@ import { Badge } from "@/components/ui/badge";
 import { Clock, User } from "lucide-react";
 import { parseISO, isSameDay } from "date-fns";
 
-export default function StylistCalendar({ appointments, selectedDate, stylists, filterStylist }) {
+export default function StylistCalendar({
+  appointments,
+  selectedDate,
+  stylists,
+  filterStylist,
+}) {
   const timeSlots = [
-    "9:00 AM", "9:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM",
-    "12:00 PM", "12:30 PM", "1:00 PM", "1:30 PM", "2:00 PM", "2:30 PM",
-    "3:00 PM", "3:30 PM", "4:00 PM", "4:30 PM", "5:00 PM", "5:30 PM",
-    "6:00 PM", "6:30 PM", "7:00 PM"
+    "9:00 AM",
+    "9:30 AM",
+    "10:00 AM",
+    "10:30 AM",
+    "11:00 AM",
+    "11:30 AM",
+    "12:00 PM",
+    "12:30 PM",
+    "1:00 PM",
+    "1:30 PM",
+    "2:00 PM",
+    "2:30 PM",
+    "3:00 PM",
+    "3:30 PM",
+    "4:00 PM",
+    "4:30 PM",
+    "5:00 PM",
+    "5:30 PM",
+    "6:00 PM",
+    "6:30 PM",
+    "7:00 PM",
   ];
 
   const displayStylists = filterStylist === "all" ? stylists : [filterStylist];
@@ -21,7 +43,7 @@ export default function StylistCalendar({ appointments, selectedDate, stylists, 
         isSameDay(parseISO(apt.appointment_date), selectedDate) &&
         apt.appointment_time === time &&
         apt.status !== "cancelled" &&
-        apt.status !== "no-show"
+        apt.status !== "no-show",
     );
   };
 
@@ -36,7 +58,12 @@ export default function StylistCalendar({ appointments, selectedDate, stylists, 
     <div className="overflow-x-auto">
       <div className="min-w-[800px]">
         {/* Header with stylist names */}
-        <div className="grid gap-2 mb-4" style={{ gridTemplateColumns: `120px repeat(${displayStylists.length}, 1fr)` }}>
+        <div
+          className="grid gap-2 mb-4"
+          style={{
+            gridTemplateColumns: `120px repeat(${displayStylists.length}, 1fr)`,
+          }}
+        >
           <div className="font-semibold text-gray-400 text-sm">Time</div>
           {displayStylists.map((stylist) => (
             <Card key={stylist} className="bg-[#141414] border-[#1f1f1f]">
@@ -56,7 +83,9 @@ export default function StylistCalendar({ appointments, selectedDate, stylists, 
             <div
               key={time}
               className="grid gap-2"
-              style={{ gridTemplateColumns: `120px repeat(${displayStylists.length}, 1fr)` }}
+              style={{
+                gridTemplateColumns: `120px repeat(${displayStylists.length}, 1fr)`,
+              }}
             >
               <div className="flex items-center text-gray-400 text-sm font-medium">
                 <Clock className="w-4 h-4 mr-2" />
@@ -73,7 +102,9 @@ export default function StylistCalendar({ appointments, selectedDate, stylists, 
                   >
                     <CardContent className="p-3">
                       {appts.length === 0 ? (
-                        <div className="text-gray-600 text-xs text-center py-4">Available</div>
+                        <div className="text-gray-600 text-xs text-center py-4">
+                          Available
+                        </div>
                       ) : (
                         <div className="space-y-2">
                           {appts.map((apt) => (
@@ -103,7 +134,9 @@ export default function StylistCalendar({ appointments, selectedDate, stylists, 
                                 <span className="text-gray-400 text-xs">
                                   {apt.duration_minutes} min
                                 </span>
-                                <Badge className={`${statusColors[apt.status]} border text-xs`}>
+                                <Badge
+                                  className={`${statusColors[apt.status]} border text-xs`}
+                                >
                                   {apt.status}
                                 </Badge>
                               </div>

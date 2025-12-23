@@ -1,16 +1,43 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Phone, Clock, CheckCircle, XCircle, Info, ArrowRight } from "lucide-react";
+import {
+  Phone,
+  Clock,
+  CheckCircle,
+  XCircle,
+  Info,
+  ArrowRight,
+} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { Button } from "@/components/ui/button";
 
 const outcomeConfig = {
-  "bokad": { icon: CheckCircle, color: "text-[#84CC16]", bg: "bg-[#84CC16]/10", label: "Bokad" },
-  "information": { icon: Info, color: "text-blue-500", bg: "bg-blue-500/10", label: "Information" },
-  "ingen_åtgärd": { icon: XCircle, color: "text-gray-500", bg: "bg-gray-500/10", label: "Ingen åtgärd" },
-  "misslyckad": { icon: XCircle, color: "text-red-500", bg: "bg-red-500/10", label: "Misslyckad" }
+  bokad: {
+    icon: CheckCircle,
+    color: "text-[#84CC16]",
+    bg: "bg-[#84CC16]/10",
+    label: "Bokad",
+  },
+  information: {
+    icon: Info,
+    color: "text-blue-500",
+    bg: "bg-blue-500/10",
+    label: "Information",
+  },
+  ingen_åtgärd: {
+    icon: XCircle,
+    color: "text-gray-500",
+    bg: "bg-gray-500/10",
+    label: "Ingen åtgärd",
+  },
+  misslyckad: {
+    icon: XCircle,
+    color: "text-red-500",
+    bg: "bg-red-500/10",
+    label: "Misslyckad",
+  },
 };
 
 export default function RecentCalls({ callLogs }) {
@@ -41,7 +68,11 @@ export default function RecentCalls({ callLogs }) {
           Senaste Samtal
         </CardTitle>
         <Link to={createPageUrl("CallHistory")}>
-          <Button variant="ghost" size="sm" className="text-[#84CC16] hover:text-[#84CC16] hover:bg-[#84CC16]/10">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-[#84CC16] hover:text-[#84CC16] hover:bg-[#84CC16]/10"
+          >
             Se alla
             <ArrowRight className="w-4 h-4 ml-1" />
           </Button>
@@ -50,9 +81,10 @@ export default function RecentCalls({ callLogs }) {
       <CardContent>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {callLogs.map((call) => {
-            const config = outcomeConfig[call.outcome] || outcomeConfig.ingen_åtgärd;
+            const config =
+              outcomeConfig[call.outcome] || outcomeConfig.ingen_åtgärd;
             const Icon = config.icon;
-            
+
             return (
               <div
                 key={call.id}
@@ -62,26 +94,35 @@ export default function RecentCalls({ callLogs }) {
                   <div className={`p-2 rounded-lg ${config.bg}`}>
                     <Icon className={`w-4 h-4 ${config.color}`} />
                   </div>
-                  <Badge variant="outline" className="text-gray-400 border-[#2A2A2A]">
+                  <Badge
+                    variant="outline"
+                    className="text-gray-400 border-[#2A2A2A]"
+                  >
                     {call.call_type}
                   </Badge>
                 </div>
-                
+
                 <div className="space-y-2">
                   <div>
                     <p className="text-xs text-gray-500 mb-1">Från</p>
-                    <p className="text-sm text-white font-medium">{call.from_number || 'Okänt nummer'}</p>
+                    <p className="text-sm text-white font-medium">
+                      {call.from_number || "Okänt nummer"}
+                    </p>
                   </div>
-                  
+
                   {call.duration_seconds && (
                     <div className="flex items-center gap-1 text-xs text-gray-400">
                       <Clock className="w-3 h-3" />
-                      {Math.floor(call.duration_seconds / 60)}:{(call.duration_seconds % 60).toString().padStart(2, '0')} min
+                      {Math.floor(call.duration_seconds / 60)}:
+                      {(call.duration_seconds % 60).toString().padStart(2, "0")}{" "}
+                      min
                     </div>
                   )}
-                  
+
                   <div className="pt-2 border-t border-[#2A2A2A]">
-                    <p className={`text-xs font-medium ${config.color}`}>{config.label}</p>
+                    <p className={`text-xs font-medium ${config.color}`}>
+                      {config.label}
+                    </p>
                   </div>
                 </div>
               </div>

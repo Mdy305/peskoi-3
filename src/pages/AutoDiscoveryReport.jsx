@@ -9,10 +9,10 @@ export default function AutoDiscoveryReport() {
   const [report, setReport] = React.useState(null);
 
   const { mutate: runDiscovery, isLoading } = useMutation({
-    mutationFn: () => base44.functions.invoke('squareAutoDiscover', {}),
+    mutationFn: () => base44.functions.invoke("squareAutoDiscover", {}),
     onSuccess: (response) => {
       setReport(response.data);
-    }
+    },
   });
 
   React.useEffect(() => {
@@ -20,25 +20,36 @@ export default function AutoDiscoveryReport() {
   }, []);
 
   const getStepStatus = (step) => {
-    if (!report) return 'pending';
-    return report.report?.[step]?.status || 'pending';
+    if (!report) return "pending";
+    return report.report?.[step]?.status || "pending";
   };
 
   const getStepIcon = (status) => {
-    if (status === 'PASSED') return <CheckCircle2 className="w-5 h-5 text-white/60" />;
-    if (status === 'FAILED') return <AlertCircle className="w-5 h-5 text-white/60" />;
-    if (status === 'WARNING') return <AlertCircle className="w-5 h-5 text-white/40" />;
+    if (status === "PASSED")
+      return <CheckCircle2 className="w-5 h-5 text-white/60" />;
+    if (status === "FAILED")
+      return <AlertCircle className="w-5 h-5 text-white/60" />;
+    if (status === "WARNING")
+      return <AlertCircle className="w-5 h-5 text-white/40" />;
     return <Loader2 className="w-5 h-5 text-white/40 animate-spin" />;
   };
 
   const steps = [
-    { id: 'step1_locations', label: 'Location Discovery', key: 'locations' },
-    { id: 'step2_services', label: 'Service Discovery', key: 'services' },
-    { id: 'step3_staff', label: 'Staff Discovery', key: 'staff' },
-    { id: 'step4_availability', label: 'Availability Verification', key: 'availability' },
-    { id: 'step5_products', label: 'Product Discovery', key: 'products' },
-    { id: 'step6_policies', label: 'Policy Extraction', key: 'policies' },
-    { id: 'step7_validation', label: 'Data Consistency Check', key: 'validation' }
+    { id: "step1_locations", label: "Location Discovery", key: "locations" },
+    { id: "step2_services", label: "Service Discovery", key: "services" },
+    { id: "step3_staff", label: "Staff Discovery", key: "staff" },
+    {
+      id: "step4_availability",
+      label: "Availability Verification",
+      key: "availability",
+    },
+    { id: "step5_products", label: "Product Discovery", key: "products" },
+    { id: "step6_policies", label: "Policy Extraction", key: "policies" },
+    {
+      id: "step7_validation",
+      label: "Data Consistency Check",
+      key: "validation",
+    },
   ];
 
   return (
@@ -80,7 +91,7 @@ export default function AutoDiscoveryReport() {
           {steps.map((step, index) => {
             const status = getStepStatus(step.id);
             const stepData = report?.report?.[step.id];
-            
+
             return (
               <motion.div
                 key={step.id}
@@ -97,7 +108,7 @@ export default function AutoDiscoveryReport() {
                         {step.label}
                       </div>
                     </div>
-                    
+
                     {stepData?.count !== undefined && (
                       <div className="text-white/40 text-xs tracking-wider ml-8">
                         Found: {stepData.count} {step.key}
@@ -118,7 +129,7 @@ export default function AutoDiscoveryReport() {
 
                     {stepData?.missing && (
                       <div className="text-white/40 text-xs ml-8 mt-1">
-                        Missing: {stepData.missing.join(', ')}
+                        Missing: {stepData.missing.join(", ")}
                       </div>
                     )}
                   </div>
@@ -140,13 +151,15 @@ export default function AutoDiscoveryReport() {
             variant="outline"
             className="gap-2"
           >
-            <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
+            <RefreshCw
+              className={`w-4 h-4 ${isLoading ? "animate-spin" : ""}`}
+            />
             Re-scan
           </Button>
 
-          {report?.status === 'CONNECTED' && (
+          {report?.status === "CONNECTED" && (
             <Button
-              onClick={() => window.location.href = '/'}
+              onClick={() => (window.location.href = "/")}
               className="bg-white text-black hover:bg-white/90"
             >
               Go to Dashboard
@@ -155,7 +168,7 @@ export default function AutoDiscoveryReport() {
         </div>
 
         {/* Fix Instructions */}
-        {report?.status === 'PARTIALLY_CONNECTED' && (
+        {report?.status === "PARTIALLY_CONNECTED" && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -165,8 +178,9 @@ export default function AutoDiscoveryReport() {
               FIX REQUIRED
             </div>
             <div className="text-white/80 text-sm tracking-wide leading-relaxed">
-              PESKOI™ cannot operate until all critical items are configured in Square.
-              Please fix the missing items above in your Square dashboard, then re-scan.
+              PESKOI™ cannot operate until all critical items are configured in
+              Square. Please fix the missing items above in your Square
+              dashboard, then re-scan.
             </div>
           </motion.div>
         )}

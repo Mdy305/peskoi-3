@@ -30,14 +30,17 @@ export default function BusinessHoursForm({ business, onSave }) {
 
   useEffect(() => {
     if (business?.business_hours) {
-      const transformed = Object.entries(business.business_hours).reduce((acc, [day, times]) => {
-        acc[day] = {
-          open: times.open || "09:00",
-          close: times.close || "17:00",
-          closed: !times.open || !times.close,
-        };
-        return acc;
-      }, {});
+      const transformed = Object.entries(business.business_hours).reduce(
+        (acc, [day, times]) => {
+          acc[day] = {
+            open: times.open || "09:00",
+            close: times.close || "17:00",
+            closed: !times.open || !times.close,
+          };
+          return acc;
+        },
+        {},
+      );
       setHours(transformed);
     }
   }, [business]);
@@ -77,13 +80,17 @@ export default function BusinessHoursForm({ business, onSave }) {
             >
               <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
                 <div className="flex items-center justify-between sm:justify-start sm:w-32">
-                  <Label className="text-xs sm:text-sm text-white">{dayLabels[day]}</Label>
+                  <Label className="text-xs sm:text-sm text-white">
+                    {dayLabels[day]}
+                  </Label>
                   <label className="flex items-center gap-2 cursor-pointer sm:hidden">
                     <span className="text-xs text-gray-400">Closed</span>
                     <input
                       type="checkbox"
                       checked={times.closed}
-                      onChange={(e) => updateDay(day, "closed", e.target.checked)}
+                      onChange={(e) =>
+                        updateDay(day, "closed", e.target.checked)
+                      }
                       className="w-4 h-4 rounded border-[#1f1f1f] bg-[#0a0a0a] text-[#84CC16]"
                     />
                   </label>
@@ -104,13 +111,17 @@ export default function BusinessHoursForm({ business, onSave }) {
                       <Input
                         type="time"
                         value={times.close}
-                        onChange={(e) => updateDay(day, "close", e.target.value)}
+                        onChange={(e) =>
+                          updateDay(day, "close", e.target.value)
+                        }
                         className="bg-[#0a0a0a] border-[#1f1f1f] text-white text-sm"
                       />
                     </div>
                   </div>
                 ) : (
-                  <div className="flex-1 text-xs sm:text-sm text-gray-500">Closed</div>
+                  <div className="flex-1 text-xs sm:text-sm text-gray-500">
+                    Closed
+                  </div>
                 )}
 
                 <label className="hidden sm:flex items-center gap-2 cursor-pointer">
@@ -127,7 +138,10 @@ export default function BusinessHoursForm({ business, onSave }) {
           ))}
 
           <div className="flex justify-end pt-4">
-            <Button type="submit" className="bg-[#84CC16] hover:bg-[#84CC16]/90 text-black w-full sm:w-auto">
+            <Button
+              type="submit"
+              className="bg-[#84CC16] hover:bg-[#84CC16]/90 text-black w-full sm:w-auto"
+            >
               <Save className="w-4 h-4 mr-2" />
               Save Changes
             </Button>

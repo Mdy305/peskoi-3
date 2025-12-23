@@ -6,8 +6,8 @@ export default function ConciergeWidget() {
   const [widgetLoaded, setWidgetLoaded] = useState(false);
 
   const { data: clients = [] } = useQuery({
-    queryKey: ['saasClients'],
-    queryFn: () => base44.entities.SaasClient.list('-created_date', 1)
+    queryKey: ["saasClients"],
+    queryFn: () => base44.entities.SaasClient.list("-created_date", 1),
   });
 
   useEffect(() => {
@@ -17,7 +17,7 @@ export default function ConciergeWidget() {
     if (!client.widget_client_id) return;
 
     // Load widget script
-    const script = document.createElement('script');
+    const script = document.createElement("script");
     script.innerHTML = `
       window.PeskoiConfig = {
         clientId: '${client.widget_client_id}',
@@ -26,8 +26,8 @@ export default function ConciergeWidget() {
     `;
     document.head.appendChild(script);
 
-    const widgetScript = document.createElement('script');
-    widgetScript.src = '/api/functions/widgetScript';
+    const widgetScript = document.createElement("script");
+    widgetScript.src = "/api/functions/widgetScript";
     widgetScript.async = true;
     widgetScript.onload = () => setWidgetLoaded(true);
     document.body.appendChild(widgetScript);
@@ -35,8 +35,8 @@ export default function ConciergeWidget() {
     return () => {
       document.head.removeChild(script);
       document.body.removeChild(widgetScript);
-      const button = document.getElementById('peskoi-widget-button');
-      const container = document.getElementById('peskoi-widget-container');
+      const button = document.getElementById("peskoi-widget-button");
+      const container = document.getElementById("peskoi-widget-container");
       if (button) button.remove();
       if (container) container.remove();
     };
@@ -45,15 +45,18 @@ export default function ConciergeWidget() {
   return (
     <div className="min-h-screen bg-black text-white">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
-        
         <p className="text-xs text-white/40 tracking-[0.15em] uppercase mb-12">
           AI Concierge Widget
         </p>
 
         {clients.length === 0 ? (
           <div className="text-center py-20">
-            <p className="text-sm text-white/40 mb-4">No SaaS clients configured</p>
-            <p className="text-xs text-white/30">Create a client first to test the widget</p>
+            <p className="text-sm text-white/40 mb-4">
+              No SaaS clients configured
+            </p>
+            <p className="text-xs text-white/30">
+              Create a client first to test the widget
+            </p>
           </div>
         ) : (
           <div className="space-y-8">
@@ -62,15 +65,13 @@ export default function ConciergeWidget() {
               <p className="text-xs text-white/40 mb-6">
                 Testing widget for: {clients[0].business_name}
               </p>
-              
+
               {widgetLoaded ? (
                 <div className="text-xs text-green-400">
                   Widget loaded. Check bottom right corner →
                 </div>
               ) : (
-                <div className="text-xs text-white/40">
-                  Loading widget...
-                </div>
+                <div className="text-xs text-white/40">Loading widget...</div>
               )}
             </div>
 
@@ -86,7 +87,6 @@ export default function ConciergeWidget() {
             </div>
           </div>
         )}
-
       </div>
     </div>
   );

@@ -12,11 +12,13 @@ export default function WebsiteChat({ isOpen, onClose }) {
   useEffect(() => {
     if (isOpen && messages.length === 0) {
       // Initial greeting
-      setMessages([{
-        speaker: "assistant",
-        text: "Hello! I'm your booking assistant. I can help you schedule appointments, check availability, or reschedule existing bookings. How can I help you today?",
-        timestamp: new Date()
-      }]);
+      setMessages([
+        {
+          speaker: "assistant",
+          text: "Hello! I'm your booking assistant. I can help you schedule appointments, check availability, or reschedule existing bookings. How can I help you today?",
+          timestamp: new Date(),
+        },
+      ]);
     }
   }, [isOpen]);
 
@@ -29,13 +31,16 @@ export default function WebsiteChat({ isOpen, onClose }) {
 
     const userMessage = input.trim();
     setInput("");
-    
+
     // Add user message
-    setMessages(prev => [...prev, {
-      speaker: "user",
-      text: userMessage,
-      timestamp: new Date()
-    }]);
+    setMessages((prev) => [
+      ...prev,
+      {
+        speaker: "user",
+        text: userMessage,
+        timestamp: new Date(),
+      },
+    ]);
 
     setIsLoading(true);
 
@@ -43,24 +48,30 @@ export default function WebsiteChat({ isOpen, onClose }) {
       // Call AI booking assistant
       const response = await base44.functions.invoke("aiBookingAssistant", {
         userMessage: userMessage,
-        conversationHistory: messages.slice(-6)
+        conversationHistory: messages.slice(-6),
       });
 
       if (response.data?.text) {
-        setMessages(prev => [...prev, {
-          speaker: "assistant",
-          text: response.data.text,
-          timestamp: new Date(),
-          data: response.data // Store intent and booking data
-        }]);
+        setMessages((prev) => [
+          ...prev,
+          {
+            speaker: "assistant",
+            text: response.data.text,
+            timestamp: new Date(),
+            data: response.data, // Store intent and booking data
+          },
+        ]);
       }
     } catch (error) {
       console.error("Chat error:", error);
-      setMessages(prev => [...prev, {
-        speaker: "assistant",
-        text: "I'm having trouble connecting. Please try again.",
-        timestamp: new Date()
-      }]);
+      setMessages((prev) => [
+        ...prev,
+        {
+          speaker: "assistant",
+          text: "I'm having trouble connecting. Please try again.",
+          timestamp: new Date(),
+        },
+      ]);
     } finally {
       setIsLoading(false);
     }

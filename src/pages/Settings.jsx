@@ -5,17 +5,16 @@ import { motion } from "framer-motion";
 
 export default function Settings() {
   const { data: connection } = useQuery({
-    queryKey: ['squareConnection'],
+    queryKey: ["squareConnection"],
     queryFn: async () => {
-      const res = await base44.functions.invoke('squareGetConnection', {});
+      const res = await base44.functions.invoke("squareGetConnection", {});
       return res.data;
-    }
+    },
   });
 
   return (
     <div className="min-h-screen bg-black text-white">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
-
         <motion.p
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -26,22 +25,22 @@ export default function Settings() {
         </motion.p>
 
         <div className="space-y-8">
-          
           {[
             {
-              title: 'Square',
-              content: connection?.status === 'active' 
-                ? `Connected to ${connection.location_name}`
-                : 'Not connected'
+              title: "Square",
+              content:
+                connection?.status === "active"
+                  ? `Connected to ${connection.location_name}`
+                  : "Not connected",
             },
             {
-              title: 'Business hours',
-              content: 'Synced from Square'
+              title: "Business hours",
+              content: "Synced from Square",
             },
             {
-              title: 'Services',
-              content: 'Managed in Service Intelligence'
-            }
+              title: "Services",
+              content: "Managed in Service Intelligence",
+            },
           ].map((section, index) => (
             <motion.div
               key={section.title}
@@ -50,7 +49,7 @@ export default function Settings() {
               transition={{
                 delay: index * 0.1,
                 duration: 0.4,
-                ease: [0.22, 1, 0.36, 1]
+                ease: [0.22, 1, 0.36, 1],
               }}
               className="border-b border-white/[0.05] pb-8 hover:border-white/[0.12] transition-colors duration-300"
             >
@@ -58,9 +57,7 @@ export default function Settings() {
               <p className="text-xs text-white/40">{section.content}</p>
             </motion.div>
           ))}
-
         </div>
-
       </div>
     </div>
   );

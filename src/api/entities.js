@@ -1,5 +1,4 @@
-import { base44 } from './base44Client';
-
+import { base44 } from "./base44Client";
 
 export const Business = base44.entities.Business;
 
@@ -45,13 +44,12 @@ export const WidgetTransaction = base44.entities.WidgetTransaction;
 
 export const WidgetConversation = base44.entities.WidgetConversation;
 
-export const ClientAutomationSettings = base44.entities.ClientAutomationSettings;
+export const ClientAutomationSettings =
+  base44.entities.ClientAutomationSettings;
 
 export const ScheduledCommunication = base44.entities.ScheduledCommunication;
 
 export const Agency = base44.entities.Agency;
-
-
 
 // auth sdk:
 export const User = base44.auth;

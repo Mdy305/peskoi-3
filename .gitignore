@@ -24,3 +24,8 @@ dist-ssr
 *.sw?
 
 .env
+.vercel
+.env*.local
+auto-fix-and-open.sh
+auto-fix-and-run.sh
+fix-deploy.sh

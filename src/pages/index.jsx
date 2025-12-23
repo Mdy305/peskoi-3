@@ -1,4 +1,4 @@
-1qimport Layout from "./Layout.jsx";
+import Layout from "./Layout.jsx";
 
 import Dashboard from "./Dashboard";
 
@@ -68,8 +68,6 @@ import ServiceIntelligence from "./ServiceIntelligence";
 
 import StylistPerformance from "./StylistPerformance";
 
-import ConnectSquare from "./connect-square";
-
 import Clients from "./Clients";
 
 import CallCenter from "./CallCenter";
@@ -97,106 +95,56 @@ import AgencyLanding from "./AgencyLanding";
 import AgencyDashboard from "./AgencyDashboard";
 
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
-
+    
 const PAGES = {
-    
-    Dashboard: Dashboard,
-    
-    LiveDemo: LiveDemo,
-    
-    Calendar: Calendar,
-    
-    CallHistory: CallHistory,
-    
-    Settings: Settings,
-    
-    Analytics: Analytics,
-    
-    Home: Home,
-    
-    CustomerView: CustomerView,
-    
-    Guide: Guide,
-    
-    Appointments: Appointments,
-    
-    Pricing: Pricing,
-    
-    Search: Search,
-    
-    ServiceRecords: ServiceRecords,
-    
-    KnowledgeBase: KnowledgeBase,
-    
-    WebsiteAnalyzer: WebsiteAnalyzer,
-    
-    ReputationManager: ReputationManager,
-    
-    SEOIntelligence: SEOIntelligence,
-    
-    ProactiveOutreach: ProactiveOutreach,
-    
-    BusinessIntelligence: BusinessIntelligence,
-    
-    ProductIntelligence: ProductIntelligence,
-    
-    RetentionEngine: RetentionEngine,
-    
-    AdvancedAnalytics: AdvancedAnalytics,
-    
-    SquareSetup: SquareSetup,
-    
-    SystemStatus: SystemStatus,
-    
-    Channels: Channels,
-    
-    ConnectSquare: ConnectSquare,
-    
-    AutoDiscoveryReport: AutoDiscoveryReport,
-    
-    Products: Products,
-    
-    Campaigns: Campaigns,
-    
-    CampaignAnalytics: CampaignAnalytics,
-    
-    VoiceGeoRank: VoiceGeoRank,
-    
-    Book: Book,
-    
-    ServiceIntelligence: ServiceIntelligence,
-    
-    StylistPerformance: StylistPerformance,
-    
-    ConnectSquare: ConnectSquare
-    
-    Clients: Clients,
-    
-    CallCenter: CallCenter,
-    
-    AIAssistant: AIAssistant,
-    
-    FeedbackManager: FeedbackManager,
-    
-    SaasOnboarding: SaasOnboarding,
-    
-    SaasDashboard: SaasDashboard,
-    
-    SaasOnboardingSuccess: SaasOnboardingSuccess,
-    
-    SaasClientAutomations: SaasClientAutomations,
-    
-    ConciergeWidget: ConciergeWidget,
-    
-    SaasAnalytics: SaasAnalytics,
-    
-    SystemHealth: SystemHealth,
-    
-    AgencyLanding: AgencyLanding,
-    
-    AgencyDashboard: AgencyDashboard,
-    
-}
+  Dashboard: Dashboard,
+  LiveDemo: LiveDemo,
+  Calendar: Calendar,
+  CallHistory: CallHistory,
+  Settings: Settings,
+  Analytics: Analytics,
+  Home: Home,
+  CustomerView: CustomerView,
+  Guide: Guide,
+  Appointments: Appointments,
+  Pricing: Pricing,
+  Search: Search,
+  ServiceRecords: ServiceRecords,
+  KnowledgeBase: KnowledgeBase,
+  WebsiteAnalyzer: WebsiteAnalyzer,
+  ReputationManager: ReputationManager,
+  SEOIntelligence: SEOIntelligence,
+  ProactiveOutreach: ProactiveOutreach,
+  BusinessIntelligence: BusinessIntelligence,
+  ProductIntelligence: ProductIntelligence,
+  RetentionEngine: RetentionEngine,
+  AdvancedAnalytics: AdvancedAnalytics,
+  SquareSetup: SquareSetup,
+  SystemStatus: SystemStatus,
+  SystemHealth: SystemHealth,
+  Channels: Channels,
+  ConnectSquare: ConnectSquare,
+  AutoDiscoveryReport: AutoDiscoveryReport,
+  Products: Products,
+  Campaigns: Campaigns,
+  CampaignAnalytics: CampaignAnalytics,
+  VoiceGeoRank: VoiceGeoRank,
+  Book: Book,
+  ServiceIntelligence: ServiceIntelligence,
+  StylistPerformance: StylistPerformance,
+  Clients: Clients,
+  CallCenter: CallCenter,
+  AIAssistant: AIAssistant,
+  FeedbackManager: FeedbackManager,
+  SaasOnboarding: SaasOnboarding,
+  SaasDashboard: SaasDashboard,
+  SaasOnboardingSuccess: SaasOnboardingSuccess,
+  SaasClientAutomations: SaasClientAutomations,
+  ConciergeWidget: ConciergeWidget,
+  SaasAnalytics: SaasAnalytics,
+  AgencyLanding: AgencyLanding,
+  AgencyDashboard: AgencyDashboard,
+};
 
 function _getCurrentPage(url) {
     if (url.endsWith('/')) {
